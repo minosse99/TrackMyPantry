@@ -1,49 +1,53 @@
 package com.example.mypantry.data;
 
+import android.accounts.AccountManager;
+import android.support.annotation.RequiresApi;
+import android.util.JsonWriter;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.mypantry.data.model.LoggedInUser;
-import com.example.mypantry.connection.*;
 
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
-import javax.security.auth.login.LoginException;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
-public class LoginDataSource{
+public class LoginDataSource {
 
-    private String username;
-    private String email;
-    private String password;
+    public Result<LoggedInUser> login(String username, String password) {
 
-    public Result<LoggedInUser> login(String email, String password , String username) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        LoggedInUser user = null;
-        try {
-            if(username != null) {
-                Registration register = new Registration();
-                String id = String.valueOf(register.execute(username, email, password));
-                user = new LoggedInUser(id,AuthToken.getUsername());
-            }else {
-                user = AuthRequest.login(email, password);
-            }
-            Thread.sleep(800);                  //wait async call on Auth.login
-            if(AuthToken.isNull())
-                return new Result.Error(new LoginException("No account found"));
-            else
-                return new Result.Success<>(user);
+        try{
+
+            // TODO: handle loggedInUser authentication
+            JSONObject obj = new JSONObject();
+            obj.put("username",username);
+            obj.put("password",password);
+            LoggedInUser user =
+                    new LoggedInUser(
+                            java.util.UUID.randomUUID().toString(),
+                            username);
+            return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
+        }
     }
-}
-
 
     public void logout() {
-        AuthToken.deleteToken();
+        // TODO: revoke authentication
     }
 
 }
