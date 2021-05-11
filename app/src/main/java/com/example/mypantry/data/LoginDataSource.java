@@ -1,53 +1,50 @@
 package com.example.mypantry.data;
 
-import android.accounts.AccountManager;
-import android.support.annotation.RequiresApi;
-import android.util.JsonWriter;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.mypantry.data.model.LoggedInUser;
+import com.example.mypantry.Network;
 
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
-public class LoginDataSource {
+public class LoginDataSource{
+    private String username;
+    private String email;
+    private String password;
 
-    public Result<LoggedInUser> login(String username, String password) {
-
+    public Result<LoggedInUser> login(String email, String password , String username) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        LoggedInUser user;
         try{
-
+            if(this.username != null) {
+                Network.register(username, email, password);
+            }
+            user = Network.login(email,password);
             // TODO: handle loggedInUser authentication
-            JSONObject obj = new JSONObject();
-            obj.put("username",username);
-            obj.put("password",password);
-            LoggedInUser user =
+
+  //          String token  = sharedPref.getString(String.valueOf(R.integer.key_token),null);
+//            String username = sharedPref.getString(String.valueOf(R.integer.key_username),null);
+
+            /*
+            * LoggedInUser user =
                     new LoggedInUser(
                             java.util.UUID.randomUUID().toString(),
-                            username);
+                            email);
+                            *
+            * */
             return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
     }
 
+
     public void logout() {
         // TODO: revoke authentication
     }
+
 
 }

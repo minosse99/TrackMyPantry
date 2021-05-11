@@ -1,11 +1,17 @@
 package com.example.mypantry.ui.login;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -24,21 +30,26 @@ import com.example.mypantry.R;
 import com.example.mypantry.ui.login.LoginViewModel;
 import com.example.mypantry.ui.login.LoginViewModelFactory;
 
+import java.util.Set;
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-
+    private TextView changeText;
+    private Boolean login;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        login = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = findViewById(R.id.username);
+        final EditText usernameEditText = findViewById(R.id.email);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        changeText = findViewById(R.id.changeTextView);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -57,12 +68,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
                 if (loginResult == null) {
                     return;
                 }
-                loadingProgressBar.setVisibility(View.GONE);
+              loadingProgressBar.setVisibility(View.VISIBLE);//GONE);
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
                 }
@@ -73,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 //Complete and destroy login activity once successful
                 finish();
+
             }
         });
 
@@ -100,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                            passwordEditText.getText().toString(),getUsername());
                 }
                 return false;
             }
@@ -110,19 +123,53 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
+
                 loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                        passwordEditText.getText().toString(),getUsername());
             }
         });
     }
 
+
     private void updateUiWithUser(LoggedInUserView model){
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
+
+/*        SharedPreferences s = getSharedPreferences(
+                String.valueOf(R.integer.key_username), Context.MODE_PRIVATE);
+        Log.e("US",s.getString(String.valueOf(R.integer.key_username),"-1"));*/
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
+
+
+    public void changeRegisterLogIn(View view) {
+
+        EditText btnUsernameVisible = findViewById(R.id.username);
+      if(changeText.getText() == getText(R.string.already_register_log_in)){
+            login= true;
+            changeText.setText(getText(R.string.sign_in));
+            btnUsernameVisible.setVisibility(View.INVISIBLE);
+        }else{
+            login = false;
+            changeText.setText(getText(R.string.already_register_log_in));
+            btnUsernameVisible.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private String getUsername(){
+        EditText btnUsername = findViewById(R.id.username);
+        String username;
+        if(login){
+            return null;
+        }else{
+            username = btnUsername.getText().toString();
+            return username;
+        }
+    }
+
+
 }

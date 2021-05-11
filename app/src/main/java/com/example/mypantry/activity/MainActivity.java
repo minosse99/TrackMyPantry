@@ -1,22 +1,26 @@
 package com.example.mypantry.activity;
-
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Build;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toolbar;
 
 
-//import com.example.mypantry.dummy.DummyContent;
 import com.example.mypantry.DBManager;
 import com.example.mypantry.data.ITEM;
 import com.example.mypantry.ItemRecyclerViewAdapter;
@@ -31,43 +35,36 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Notification not;
+    //private Notification not;
     private static DBManager db = null;
     private List<ListItem> test = null;
     private RecyclerView recyclerView = null;
-    private ItemRecyclerViewAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         //Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if(test == null && recyclerView == null) {
-            test = new ArrayList<ListItem>();
+            test = new ArrayList<>();
             recyclerView = findViewById(R.id.list);
             db = new DBManager(this);
         }
-
-    /*    db.save("Caffe","122211211211","Oggi");
-
-        db.save("The","98239374934","25/05/20");
-
-        db.save("Pasta","1222112134989895","Oggi");
-
-        db.save("Computer","1222543511211","Oggi");
-
-        db.save("Stampante","12434511211","Oggi");
-
-        db.save("Cartuccia per stampanti","132432211211","Oggi");
-
-        db.save("Acqua","1222113293041","Oggi");
-
+/*
+        db.save("Caffe", "122211211211", "Oggi");
+        db.save("The", "98239374934", "25/05/20");
+        db.save("Pasta", "1222112134989895", "Oggi");
+        db.save("Computer", "1222543511211", "Oggi");
+        db.save("Stampante", "12434511211", "Oggi");
+        db.save("Cartuccia per stampanti", "132432211211", "Oggi");
+        db.save("Acqua", "1222113293041", "Oggi");
 */
         //Action Click listener on btnShare
-        Button btnShare = (Button) findViewById(R.id.btnShare);
+        Button btnShare = findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v->{
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -80,10 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
         checkDB();
+
+        SharedPreferences sharedPref = getSharedPreferences(
+                String.valueOf(R.integer.key_username), Context.MODE_PRIVATE);
+        Log.e("USer in Action : ",sharedPref.getString(String.valueOf(R.integer.key_username),"-1"));
 
     }
 
@@ -140,11 +142,13 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Error : checkDB", String.valueOf(e));
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ItemRecyclerViewAdapter(test,db,this);
+        ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(test, db, this);
 
         recyclerView.setAdapter(adapter);
 
     }
+
+
 
 
 }

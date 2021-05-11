@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteException;
 
 import com.example.mypantry.data.ITEM;
 
+import com.example.mypantry.ui.login.ListItem;
+
 public class DBManager{
 
     private ItemDBHelper dbhelper;
@@ -31,6 +33,11 @@ public class DBManager{
 // Gestione delle eccezioni
         }
     }
+
+    public void save(ListItem listItem){
+        save(listItem.getItem().content,listItem.getItem().details,"-");
+    }
+
     public boolean delete(long id)
     {
         SQLiteDatabase db=dbhelper.getWritableDatabase();
@@ -51,7 +58,7 @@ public class DBManager{
         try
         {
             SQLiteDatabase db=dbhelper.getReadableDatabase();
-            crs=db.query(false,ITEM.TBL_NAME,null, null , null , null, null, null, null);
+            crs=db.query(false, ITEM.TBL_NAME,null, null , null , null, null, null, null);
 
         }
         catch(SQLiteException sqle)

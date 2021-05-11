@@ -1,6 +1,15 @@
 package com.example.mypantry.data;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import com.example.mypantry.R;
 import com.example.mypantry.data.model.LoggedInUser;
+import com.example.mypantry.ui.login.LoginActivity;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -39,17 +48,21 @@ public class LoginRepository {
 
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
+
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
+
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<LoggedInUser> login(String email, String password ,String username) {
         // handle login
-
-        Result<LoggedInUser> result = dataSource.login(username, password);
+       Result<LoggedInUser> result = dataSource.login(email, password , username);
         if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+            LoggedInUser user = ((Result.Success<LoggedInUser>) result).getData();
+            setLoggedInUser(user);
+
         }
+
         return result;
     }
 }
