@@ -1,14 +1,22 @@
 package com.example.mypantry;
 
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.mypantry.data.model.LoggedInUser;
+import com.example.mypantry.ui.login.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.IOException;
+import java.security.AuthProvider;
+
+import javax.crypto.EncryptedPrivateKeyInfo;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -20,8 +28,11 @@ import okhttp3.Response;
 
 public class Network {
     public static final String url = "https://lam21.modron.network/";
-    private static OkHttpClient client = new OkHttpClient();
-    private static String tokenSession;
+    private static final OkHttpClient client = new OkHttpClient();
+    private static String tokenSession = null;
+    private static Context context = null;
+
+    public static void setContext(Context context){ Network.context = context; }
 
     public static void register(String username,String email, String password){
         final int[] result = {0};
@@ -70,7 +81,13 @@ public class Network {
                     JSONObject object = (JSONObject) new JSONTokener(res).nextValue();
                     String token = object.getString("accessToken");
                     Log.d("ACCESS TOKEN",token);
+
+                    AuthToken.token = token;
+                    AuthToken.username = email;
+
                     tokenSession = token;
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,6 +99,16 @@ public class Network {
                 java.util.UUID.randomUUID().toString(),
                 email,tokenSession);
     }
+
+    public static void setAuthToken(String email,String Token){
+
+    }
+
+    public static String getToken(){
+        return tokenSession;
+    }
 }
+
+
 //simone@gmail.com
 //simone

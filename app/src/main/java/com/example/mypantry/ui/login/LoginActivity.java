@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+import android.text.BoringLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,11 +27,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mypantry.AuthToken;
+import com.example.mypantry.Network;
 import com.example.mypantry.R;
 import com.example.mypantry.ui.login.LoginViewModel;
 import com.example.mypantry.ui.login.LoginViewModelFactory;
 
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private Boolean login;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         login = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -86,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Complete and destroy login activity once successful
                 finish();
 
+
             }
         });
 
@@ -126,18 +132,49 @@ public class LoginActivity extends AppCompatActivity {
 
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString(),getUsername());
+
             }
         });
     }
 
+    private Boolean checkLoginSave() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.key_username),Context.MODE_PRIVATE);
+        String tokn = pref.getString(getString(R.string.key_token),"-1");
+        String usr = pref.getString(getString(R.string.key_username),"-1");
+        if(!tokn.equals("-1") && !usr.equals("-1")){
+            AuthToken.token = tokn;
+            AuthToken.username = usr;
+            Log.d("DONE it","DONE IT");
+            return true;
 
+        }else{
+            Log.d("false","false");
+            return false;
+
+        }
+    }
+
+
+    public void storePreferences() {
+        while(AuthToken.token == null){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.username), AuthToken.username);
+        editor.commit();
+
+        checkLoginSave();
+
+    }
     private void updateUiWithUser(LoggedInUserView model){
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-
-/*        SharedPreferences s = getSharedPreferences(
-                String.valueOf(R.integer.key_username), Context.MODE_PRIVATE);
-        Log.e("US",s.getString(String.valueOf(R.integer.key_username),"-1"));*/
+        storePreferences();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
@@ -170,6 +207,7 @@ public class LoginActivity extends AppCompatActivity {
             return username;
         }
     }
+
 
 
 }

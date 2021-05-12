@@ -9,7 +9,7 @@ class LoggedInUserView {
     private String displayName;
 
 
-    LoggedInUserView(String displayName, LoggedInUser user ) {
+    LoggedInUserView(String displayName) {
         this.displayName = displayName;
     }
 

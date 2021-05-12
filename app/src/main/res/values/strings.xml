@@ -39,6 +39,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="save_file_token">ACCESS_TOKEN</string>
-    <integer name="key_token">1</integer>
-    <integer name="key_username">2</integer>
+    <string name="key_token">AUTH_TOKEN</string>
+    <string name="key_username">AUTH_USERNAME</string>
 </resources>

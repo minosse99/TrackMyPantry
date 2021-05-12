@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toolbar;
 
 
+import com.example.mypantry.AuthToken;
 import com.example.mypantry.DBManager;
 import com.example.mypantry.data.ITEM;
 import com.example.mypantry.ItemRecyclerViewAdapter;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-        //Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -83,10 +82,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         checkDB();
 
-        SharedPreferences sharedPref = getSharedPreferences(
-                String.valueOf(R.integer.key_username), Context.MODE_PRIVATE);
-        Log.e("USer in Action : ",sharedPref.getString(String.valueOf(R.integer.key_username),"-1"));
-
+        if(!AuthToken.isNull()){
+            Log.e("USERNAME ", AuthToken.username);
+            Log.e("TOKEN ", AuthToken.token);
+            Button btnLogin = findViewById(R.id.Login);
+            btnLogin.setText(AuthToken.username);
+            btnLogin.setClickable(false);
+        }
     }
 
 

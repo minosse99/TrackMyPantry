@@ -25,6 +25,7 @@ public class LoginDataSource{
             user = Network.login(email,password);
             // TODO: handle loggedInUser authentication
 
+            Network.setAuthToken(email,user.getToken());
   //          String token  = sharedPref.getString(String.valueOf(R.integer.key_token),null);
 //            String username = sharedPref.getString(String.valueOf(R.integer.key_username),null);
 
