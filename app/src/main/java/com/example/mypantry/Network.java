@@ -30,9 +30,7 @@ public class Network {
     public static final String url = "https://lam21.modron.network/";
     private static final OkHttpClient client = new OkHttpClient();
     private static String tokenSession = null;
-    private static Context context = null;
 
-    public static void setContext(Context context){ Network.context = context; }
 
     public static void register(String username,String email, String password){
         final int[] result = {0};
@@ -54,9 +52,8 @@ public class Network {
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
-            Log.d("Response", "on Response: " + response.body().string());
-
-            }
+            Log.d("Register",response.body().string());
+        }
         });
     }
 
@@ -81,12 +78,9 @@ public class Network {
                     JSONObject object = (JSONObject) new JSONTokener(res).nextValue();
                     String token = object.getString("accessToken");
                     Log.d("ACCESS TOKEN",token);
-
                     AuthToken.token = token;
                     AuthToken.username = email;
-
                     tokenSession = token;
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -97,16 +91,9 @@ public class Network {
 
         return new LoggedInUser(
                 java.util.UUID.randomUUID().toString(),
-                email,tokenSession);
+                email);
     }
 
-    public static void setAuthToken(String email,String Token){
-
-    }
-
-    public static String getToken(){
-        return tokenSession;
-    }
 }
 
 

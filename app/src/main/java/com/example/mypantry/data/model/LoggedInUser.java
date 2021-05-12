@@ -1,5 +1,7 @@
 package com.example.mypantry.data.model;
 
+import com.example.mypantry.AuthToken;
+
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
@@ -9,10 +11,10 @@ public class LoggedInUser {
     private String displayName;
     private  String token;
 
-    public LoggedInUser(String userId, String displayName, String token) {
+    public LoggedInUser(String userId, String displayName) {
         this.userId = userId;
         this.displayName = displayName;
-        this.token = token;
+        AuthToken.username = displayName;
     }
 
     public String getUserId() {

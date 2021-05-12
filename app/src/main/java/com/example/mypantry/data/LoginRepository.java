@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.mypantry.Network;
 import com.example.mypantry.R;
 import com.example.mypantry.data.model.LoggedInUser;
 import com.example.mypantry.ui.login.LoginActivity;
@@ -55,7 +56,6 @@ public class LoginRepository {
     }
 
     public Result<LoggedInUser> login(String email, String password ,String username) {
-        // handle login
        Result<LoggedInUser> result = dataSource.login(email, password , username);
         if (result instanceof Result.Success) {
             LoggedInUser user = ((Result.Success<LoggedInUser>) result).getData();

@@ -1,5 +1,7 @@
 package com.example.mypantry.data;
 
+import android.util.Log;
+
 import com.example.mypantry.data.model.LoggedInUser;
 import com.example.mypantry.Network;
 
@@ -17,25 +19,16 @@ public class LoginDataSource{
         this.username = username;
         this.password = password;
         this.email = email;
-        LoggedInUser user;
-        try{
-            if(this.username != null) {
-                Network.register(username, email, password);
-            }
-            user = Network.login(email,password);
+        LoggedInUser user = null;
+        try {
+            if(username != null){
+                Network.register(username,email,password);
+                user = new LoggedInUser(java.util.UUID.randomUUID().toString(),
+                        email);
+
+            }else
+                user = Network.login(email,password);
             // TODO: handle loggedInUser authentication
-
-            Network.setAuthToken(email,user.getToken());
-  //          String token  = sharedPref.getString(String.valueOf(R.integer.key_token),null);
-//            String username = sharedPref.getString(String.valueOf(R.integer.key_username),null);
-
-            /*
-            * LoggedInUser user =
-                    new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
-                            email);
-                            *
-            * */
             return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));

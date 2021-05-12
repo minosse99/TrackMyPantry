@@ -41,4 +41,5 @@
     <string name="save_file_token">ACCESS_TOKEN</string>
     <string name="key_token">AUTH_TOKEN</string>
     <string name="key_username">AUTH_USERNAME</string>
+    <string name ="tokenDictionary">AUTH_DICTIONARY</string>
 </resources>

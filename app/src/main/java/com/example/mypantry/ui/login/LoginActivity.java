@@ -33,6 +33,7 @@ import com.example.mypantry.R;
 import com.example.mypantry.ui.login.LoginViewModel;
 import com.example.mypantry.ui.login.LoginViewModelFactory;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        login = false;
+        login = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())

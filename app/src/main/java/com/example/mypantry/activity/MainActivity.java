@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 
@@ -79,9 +80,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
+
+        Toast.makeText(this,"onStart",Toast.LENGTH_LONG).show();
         super.onStart();
         checkDB();
 
+        SharedPreferences pref = getSharedPreferences(getString(R.string.tokenDictionary),Context.MODE_PRIVATE);
+        String tokn = pref.getString(getString(R.string.key_token),"-1");
+        String usr = pref.getString(getString(R.string.key_username),"-1");
+        if (!tokn.equals("-1") && !usr.equals("-1")){
+            AuthToken.token = tokn;
+            AuthToken.username = usr;
+            Log.e("Preferences","Presenti");
+        }else{
+            Log.e("Prefedences","non presenti");
+        }
         if(!AuthToken.isNull()){
             Log.e("USERNAME ", AuthToken.username);
             Log.e("TOKEN ", AuthToken.token);
@@ -89,6 +102,18 @@ public class MainActivity extends AppCompatActivity {
             btnLogin.setText(AuthToken.username);
             btnLogin.setClickable(false);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        Toast.makeText(this,"onStop",Toast.LENGTH_LONG).show();
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.tokenDictionary),Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.key_username), AuthToken.username);
+        editor.putString(getString(R.string.key_token), AuthToken.token);
+        editor.apply();
+
+        super.onStop();
     }
 
 
