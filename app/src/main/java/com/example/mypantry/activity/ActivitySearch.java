@@ -1,23 +1,37 @@
 package com.example.mypantry.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mypantry.R;
+import com.example.mypantry.connection.AuthToken;
+import com.example.mypantry.connection.ProductRequest;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -28,19 +42,45 @@ public class ActivitySearch extends AppCompatActivity{
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     private ToneGenerator toneGen1;
-    private TextView barcodeText;
+    protected TextView barcodeText;
     private String barcodeData;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*
+        */
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
         surfaceView = findViewById(R.id.surface_view);
         barcodeText = findViewById(R.id.barcode);
         //initialiseDetectorsAndSources();
+
+        Button btn = findViewById(R.id.searchButton);
+        btn.setOnClickListener(view->{
+            String barcode = getBarcode();
+            Log.e("111barcode",barcode);
+            //Log.e("valueof", String.valueOf(text.getText()));
+
+            ProductRequest.productsList(barcode);
+
+        });
+
+        Button btnScan = findViewById(R.id.scanButton);
+        btnScan.setOnClickListener(v->{
+/*
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("add a new product in a list")
+                    .setTitle("Adding");
+            Dialog dialog = new Dialog(this);
+
+            builder.show();*/
+            onCreateDialog(v).show();
+        });
     }
 
     private void initialiseDetectorsAndSources() {
@@ -124,6 +164,11 @@ public class ActivitySearch extends AppCompatActivity{
         });
     }
 
+    public String getBarcode(){
+        EditText text = (EditText) findViewById(R.id.barcode);
+        return text.getText().toString();
+    }
+
 
     @Override
     protected void onPause() {
@@ -138,5 +183,35 @@ public class ActivitySearch extends AppCompatActivity{
         getSupportActionBar().hide();
         initialiseDetectorsAndSources();
     }
+
+        public Dialog onCreateDialog(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Get the layout inflater
+            LayoutInflater inflater = getLayoutInflater();
+
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.add_product_dialog, null))
+                    // Add action buttons
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            EditText name = (EditText) findViewById(R.id.nameProduct);
+                            String names = name.getText().toString();
+                            Log.e("name",names);
+                            EditText description = (EditText) findViewById(R.id.descriptionProduct);
+                            String descr = description.getText().toString();
+                            Log.e("description",descr);
+                            //MainActivity.saveElement("1234567",name.getText().toString(),description.getText().toString());
+                            onStart();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            return builder.create();
+        }
 
 }

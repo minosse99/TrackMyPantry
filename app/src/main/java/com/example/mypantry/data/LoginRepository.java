@@ -1,16 +1,6 @@
 package com.example.mypantry.data;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import com.example.mypantry.Network;
-import com.example.mypantry.R;
 import com.example.mypantry.data.model.LoggedInUser;
-import com.example.mypantry.ui.login.LoginActivity;
 
 /**
  * Class that requests authentication and user information from the remote data source and

@@ -1,20 +1,14 @@
 package com.example.mypantry.ui.login;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
-import android.text.BoringLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,15 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mypantry.AuthToken;
-import com.example.mypantry.Network;
+import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.R;
-import com.example.mypantry.ui.login.LoginViewModel;
-import com.example.mypantry.ui.login.LoginViewModelFactory;
-
-import java.io.IOException;
-import java.util.Set;
-import java.util.prefs.Preferences;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -138,38 +125,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private Boolean checkLoginSave() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.key_username),Context.MODE_PRIVATE);
-        String tokn = pref.getString(getString(R.string.key_token),"-1");
-        String usr = pref.getString(getString(R.string.key_username),"-1");
-        if(!tokn.equals("-1") && !usr.equals("-1")){
-            AuthToken.token = tokn;
-            AuthToken.username = usr;
-            Log.d("DONE it","DONE IT");
-            return true;
-
-        }else{
-            Log.d("false","false");
-            return false;
-
-        }
-    }
-
 
     public void storePreferences() {
-        while(AuthToken.token == null){
+        while(AuthToken.isNull()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.username), AuthToken.username);
-        editor.commit();
-
-        checkLoginSave();
+        AuthToken.importToken(this);
 
     }
     private void updateUiWithUser(LoggedInUserView model){

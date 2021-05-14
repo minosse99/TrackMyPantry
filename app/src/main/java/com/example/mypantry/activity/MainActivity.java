@@ -4,31 +4,29 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Build;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 
-import com.example.mypantry.AuthToken;
+import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.DBManager;
 import com.example.mypantry.data.ITEM;
 import com.example.mypantry.ItemRecyclerViewAdapter;
-import com.example.mypantry.Notification;
 import com.example.mypantry.R;
 import com.example.mypantry.dummy.DummyItem;
+import com.example.mypantry.ui.login.DialogLogout;
 import com.example.mypantry.ui.login.ListItem;
 import com.example.mypantry.ui.login.LoginActivity;
 
@@ -41,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private static DBManager db = null;
     private List<ListItem> test = null;
     private RecyclerView recyclerView = null;
-
+    private DialogLogout dialout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        AuthToken.importToken(this);
+        dialout = new DialogLogout(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -84,46 +84,42 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"onStart",Toast.LENGTH_LONG).show();
         super.onStart();
         checkDB();
+        Button btnLogin = findViewById(R.id.Login);
 
-        SharedPreferences pref = getSharedPreferences(getString(R.string.tokenDictionary),Context.MODE_PRIVATE);
-        String tokn = pref.getString(getString(R.string.key_token),"-1");
-        String usr = pref.getString(getString(R.string.key_username),"-1");
-        if (!tokn.equals("-1") && !usr.equals("-1")){
-            AuthToken.token = tokn;
-            AuthToken.username = usr;
-            Log.e("Preferences","Presenti");
-        }else{
-            Log.e("Prefedences","non presenti");
-        }
+        Log.e("import token",AuthToken.getUsername());
         if(!AuthToken.isNull()){
-            Log.e("USERNAME ", AuthToken.username);
-            Log.e("TOKEN ", AuthToken.token);
-            Button btnLogin = findViewById(R.id.Login);
-            btnLogin.setText(AuthToken.username);
-            btnLogin.setClickable(false);
+           btnLogin.setText(AuthToken.getUsername());
+        }else{
+            btnLogin.setText("LOGIN");
         }
     }
 
     @Override
     protected void onStop() {
         Toast.makeText(this,"onStop",Toast.LENGTH_LONG).show();
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.tokenDictionary),Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.key_username), AuthToken.username);
-        editor.putString(getString(R.string.key_token), AuthToken.token);
-        editor.apply();
 
+        AuthToken.saveToken(this);
         super.onStop();
     }
 
 
     public void loginAction(View view) {
-        Intent intent = new Intent();
-        ComponentName component =
-            new ComponentName(this, LoginActivity.class);
-        intent.setComponent(component);
-        startActivity(intent);
+        if(!AuthToken.isNull()){
+                AlertDialog.Builder b = dialout.get();
+                b.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Button btnLogin = findViewById(R.id.Login);
+                    btnLogin.setText("LOGIN");
+                    AuthToken.deleteToken();
+                }}).create().show();
 
+        }else {
+            Intent intent = new Intent();
+            ComponentName component =
+                    new ComponentName(this, LoginActivity.class);
+            intent.setComponent(component);
+            startActivity(intent);
+        }
     }
 
     public void newItemAction(View view){
@@ -175,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    public static void saveElement(String code ,String name , String description){
+        db.save(code,name,description);
+    }
 
 
 }

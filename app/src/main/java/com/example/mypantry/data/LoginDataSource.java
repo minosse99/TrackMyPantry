@@ -1,9 +1,7 @@
 package com.example.mypantry.data;
 
-import android.util.Log;
-
 import com.example.mypantry.data.model.LoggedInUser;
-import com.example.mypantry.Network;
+import com.example.mypantry.connection.AuthRequest;
 
 import java.io.IOException;
 
@@ -22,12 +20,12 @@ public class LoginDataSource{
         LoggedInUser user = null;
         try {
             if(username != null){
-                Network.register(username,email,password);
+                AuthRequest.register(username,email,password);
                 user = new LoggedInUser(java.util.UUID.randomUUID().toString(),
                         email);
 
             }else
-                user = Network.login(email,password);
+                user = AuthRequest.login(email,password);
             // TODO: handle loggedInUser authentication
             return new Result.Success<>(user);
         } catch (Exception e) {
