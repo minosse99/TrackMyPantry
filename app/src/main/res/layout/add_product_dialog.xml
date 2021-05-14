@@ -4,34 +4,36 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/explainText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="87dp"
+        android:layout_width="wrap_content"
+        android:layout_height="196dp"
         android:background="#FFFFBB33"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
         android:src="@drawable/trackmypantry" />
 
+    <TextView
+        android:id="@+id/explainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/addProduct" />
+
     <EditText
         android:id="@+id/nameProduct"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="Name"
+        android:inputType="" />
 
     <EditText
         android:id="@+id/descriptionProduct"
         android:layout_width="401dp"
         android:layout_height="127dp"
         android:ems="10"
+        android:hint="Describes your product"
         android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        android:inputType="" />
 
 </LinearLayout>

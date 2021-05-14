@@ -45,4 +45,6 @@
     <string name="key_token">AUTH_TOKEN</string>
     <string name="key_username">AUTH_USERNAME</string>
     <string name ="tokenDictionary">AUTH_DICTIONARY</string>
+    <string name="addProduct">Aggiungi i dettagli del tuo prodotto</string>
+    <string name="login">Login</string>
 </resources>

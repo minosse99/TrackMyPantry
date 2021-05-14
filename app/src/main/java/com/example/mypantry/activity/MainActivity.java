@@ -44,25 +44,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        AuthToken.importToken(this);
-        dialout = new DialogLogout(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AuthToken.importToken(this);
+        dialout = new DialogLogout(this);
         if(test == null && recyclerView == null) {
             test = new ArrayList<>();
             recyclerView = findViewById(R.id.list);
             db = new DBManager(this);
         }
-
- /*      db.save("Caffe", "122211211211", "Oggi");
+/*
+       db.save("Caffe", "122211211211", "Oggi");
         db.save("The", "98239374934", "25/05/20");
         db.save("Pasta", "1222112134989895", "Oggi");
         db.save("Computer", "1222543511211", "Oggi");
         db.save("Stampante", "12434511211", "Oggi");
         db.save("Cartuccia per stampanti", "132432211211", "Oggi");
-        db.save("Acqua", "1222113293041", "Oggi");*/
-
+        db.save("Acqua", "1222113293041", "Oggi");
+*/
         //Action Click listener on btnShare
         Button btnShare = findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v->{
@@ -74,30 +74,24 @@ public class MainActivity extends AppCompatActivity {
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
         });
-
     }
 
 
     @Override
     public void onStart() {
-
-        Toast.makeText(this,"onStart",Toast.LENGTH_LONG).show();
         super.onStart();
         checkDB();
         Button btnLogin = findViewById(R.id.Login);
 
-        Log.e("import token",AuthToken.getUsername());
         if(!AuthToken.isNull()){
            btnLogin.setText(AuthToken.getUsername());
         }else{
-            btnLogin.setText("LOGIN");
+            btnLogin.setText(R.string.login);
         }
     }
 
     @Override
     protected void onStop() {
-        Toast.makeText(this,"onStop",Toast.LENGTH_LONG).show();
-
         AuthToken.saveToken(this);
         super.onStop();
     }
@@ -111,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
                     Button btnLogin = findViewById(R.id.Login);
                     btnLogin.setText("LOGIN");
                     AuthToken.deleteToken();
-                }}).create().show();
+                }});
+                b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {;}
+                }).create().show();
 
         }else {
             Intent intent = new Intent();
@@ -149,26 +147,20 @@ public class MainActivity extends AppCompatActivity {
     public void checkDB(){
         try {
             test.clear();
-
             Cursor cursor = db.query();
             while(cursor.moveToNext()){
-
                 String subject = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_SUBJECT));
                 int id = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_ID));
                 String text = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
 //        String date = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
-
                 test.add(new ListItem(id, new DummyItem(text,subject)));
             }
-
         }catch (CursorIndexOutOfBoundsException e){
             Log.e("Error : checkDB", String.valueOf(e));
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(test, db, this);
-
         recyclerView.setAdapter(adapter);
-
     }
 
     public static void saveElement(String code ,String name , String description){

@@ -20,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -45,13 +47,8 @@ public class ActivitySearch extends AppCompatActivity{
     protected TextView barcodeText;
     private String barcodeData;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*
-        */
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -59,15 +56,19 @@ public class ActivitySearch extends AppCompatActivity{
         surfaceView = findViewById(R.id.surface_view);
         barcodeText = findViewById(R.id.barcode);
         //initialiseDetectorsAndSources();
+        final ProgressBar loadingProgressBar = findViewById(R.id.loadingSearch);
+
 
         Button btn = findViewById(R.id.searchButton);
-        btn.setOnClickListener(view->{
-            String barcode = getBarcode();
-            Log.e("111barcode",barcode);
-            //Log.e("valueof", String.valueOf(text.getText()));
-
-            ProductRequest.productsList(barcode);
-
+        btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                String barcode = getBarcode();
+                ProductRequest req = new ProductRequest();
+                String a = String.valueOf(req.execute(barcode));
+                loadingProgressBar.setVisibility(View.GONE);
+            }
         });
 
         Button btnScan = findViewById(R.id.scanButton);
@@ -187,21 +188,33 @@ public class ActivitySearch extends AppCompatActivity{
         public Dialog onCreateDialog(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // Get the layout inflater
-            LayoutInflater inflater = getLayoutInflater();
 
+            final View customLayout = getLayoutInflater().inflate(R.layout.add_product_dialog, null);
+            builder.setView(customLayout);
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.add_product_dialog, null))
+            builder.setIcon(R.drawable.trackmypantry)
                     // Add action buttons
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            EditText name = (EditText) findViewById(R.id.nameProduct);
-                            String names = name.getText().toString();
-                            Log.e("name",names);
-                            EditText description = (EditText) findViewById(R.id.descriptionProduct);
-                            String descr = description.getText().toString();
-                            Log.e("description",descr);
+
+
+                            EditText name = customLayout.findViewById(R.id.nameProduct);
+                            EditText description = customLayout.findViewById(R.id.descriptionProduct);
+
+
+                            Log.e("name", name.getText().toString());
+                            try {
+                                ProductRequest.addProduct(name.getText().toString(), description.getText().toString(), getBarcode());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //Editable names = name.getEditableText();
+                            //                  Log.e("name", name.getText().toString());
+                            //EditText description = (EditText) findViewById(R.id.descriptionProduct);
+                            //String descr = description.getText().toString();
+                            //Log.e("description",describeProduct.getText().toString());
                             //MainActivity.saveElement("1234567",name.getText().toString(),description.getText().toString());
                             onStart();
                         }
@@ -213,5 +226,4 @@ public class ActivitySearch extends AppCompatActivity{
                     });
             return builder.create();
         }
-
 }
