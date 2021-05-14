@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
             recyclerView = findViewById(R.id.list);
             db = new DBManager(this);
         }
-/*
-        db.save("Caffe", "122211211211", "Oggi");
+
+ /*      db.save("Caffe", "122211211211", "Oggi");
         db.save("The", "98239374934", "25/05/20");
         db.save("Pasta", "1222112134989895", "Oggi");
         db.save("Computer", "1222543511211", "Oggi");
         db.save("Stampante", "12434511211", "Oggi");
         db.save("Cartuccia per stampanti", "132432211211", "Oggi");
-        db.save("Acqua", "1222113293041", "Oggi");
-*/
+        db.save("Acqua", "1222113293041", "Oggi");*/
+
         //Action Click listener on btnShare
         Button btnShare = findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v->{
