@@ -1,9 +1,7 @@
 package com.example.mypantry.connection;
 
+import android.provider.MediaStore;
 import android.util.Log;
-
-import com.example.mypantry.Utils;
-import com.example.mypantry.data.ui.fragment.HomeFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -13,7 +11,9 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -24,51 +24,40 @@ public class LoadProduct {
 
 
     public static void addProduct(String name, String describes, String barcode) throws JSONException {
-
-        MediaType JSON = MediaType.parse("application/json");
+        RequestBody formBody = new FormBody.Builder()
+                .add("token",ProductRequest.tokenSession)
+                .add("name",name)
+                .add("description",describes)
+                .add("barcode",barcode)
+                .add("test", String.valueOf(Boolean.TRUE))
+                .build();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         JSONObject json = new JSONObject();
         json.put("token",ProductRequest.tokenSession);
         json.put("name",name);
-        json.put("description",describes);
+        json.put("desciption",describes);
         json.put("barcode",barcode);
-        json.put("test",Boolean.valueOf(false));
-
-        RequestBody rb = RequestBody.create(JSON, String.valueOf(json));
+        json.put("test",true);
+        Log.e("JSON",json.toString());
+        RequestBody rb = RequestBody.create(JSON, json.toString());
 
         Request request = new Request.Builder()
+                .post(formBody)
                 .url(ProductRequest.url + ProductRequest.products)
                 .header("Authorization", "Bearer " + AuthToken.getToken())
-                .post(rb)
                 .build();
 
-        Log.e("PROVA","PROVA");
+        Log.d("Request",request.toString());
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e("FAL","onFailure");
+
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-          //      Log.e("RES",response.body().string());
-                String res = response.body().string();
-                try {
-                    JSONObject obj = new JSONObject(res);
-                    String name =  Utils.getData(obj, "name");
-                    String description = Utils.getData(obj, "description");
-                    String barcode = Utils.getData(obj, "barcode");
-                    String id = Utils.getData(obj,"id");
-
-                    Log.e("RES",response.toString());
-                    HomeFragment.db.save( name,barcode, description,1,id);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Log.e("RES",response.body().string());
             }
         });
     }
-
-
 }

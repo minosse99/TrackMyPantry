@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.mypantry.R;
 import com.example.mypantry.connection.AuthToken;
+import com.example.mypantry.connection.LoadProduct;
 import com.example.mypantry.connection.ProductRequest;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -206,7 +207,7 @@ public class ActivitySearch extends AppCompatActivity{
 
                             Log.e("name", name.getText().toString());
                             try {
-                                ProductRequest.addProduct(name.getText().toString(), description.getText().toString(), getBarcode());
+                                LoadProduct.addProduct(name.getText().toString(), description.getText().toString(), getBarcode());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

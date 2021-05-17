@@ -24,20 +24,17 @@ import okio.BufferedSink;
 
 public class ProductRequest extends AsyncTask<String, Void, String> {
     private static final OkHttpClient client = new OkHttpClient();
-    protected static String url = AuthRequest.url;
-    protected static String products = "products";
-    protected static String tokenSession;
+    public static String url = AuthRequest.url;
+    public static String products = "products";
+    public static String tokenSession;
 
     @Override
     public String doInBackground(String... strings) {
 
         Request request = new Request.Builder()
-                .url(url + products + "?" + "barcode=" + Arrays.toString(strings))
+                .url(url + products + "?" + "barcode=" + strings[0])
                 .header("Authorization", "Bearer " + AuthToken.getToken())
                 .build();
-
-        Log.e("URL", url + products + "?" + "barcode=" + Arrays.toString(strings));
-        Log.e("SCHEMA", request.toString());
 
 
         try {
@@ -66,49 +63,7 @@ public class ProductRequest extends AsyncTask<String, Void, String> {
     }
 
 
-    public static void addProduct(String name, String describes, String barcode) throws JSONException {
-        RequestBody formBody = new FormBody.Builder()
-                .add("token",tokenSession)
-                .add("name",name)
-                .add("description",describes)
-                .add("barcode",barcode)
-                .add("test", String.valueOf(Boolean.TRUE))
-                .build();
 
-
-        JSONObject json = new JSONObject();
-            json.put("token",tokenSession);
-            json.put("name",name);
-            json.put("desciption",describes);
-            json.put("barcode",barcode);
-            json.put("test",true);
-
-        final MediaType JSON
-                = MediaType.parse("application/json; charset=utf-8");
-
-
-        Log.e("JSON",json.toString());
-        RequestBody rb = RequestBody.create(JSON, json.toString());
-
-        Request request = new Request.Builder()
-                .post(rb)
-                .url(url + products)
-                .header("Authorization", "Bearer " + AuthToken.getToken())
-                .build();
-
-        Log.d("Request",request.toString());
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Log.e("RES",response.body().string());
-            }
-        });
-    }
 }
 
 

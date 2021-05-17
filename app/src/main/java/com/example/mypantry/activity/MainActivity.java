@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             btnLogin.setText(R.string.login);
         }
+        Log.d("AuthToken",AuthToken.getUsername());
+        Log.d("AuthToken",AuthToken.getToken());
     }
 
     @Override

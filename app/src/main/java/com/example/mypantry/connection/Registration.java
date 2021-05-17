@@ -3,8 +3,6 @@ package com.example.mypantry.connection;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.mypantry.Utils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,11 +29,14 @@ public class Registration extends AsyncTask<String, Void, String> {
                 .add("password",strings[2])
                 .build();
 
+        Log.e("username",strings[0]);
+
+        Log.e("email",strings[1]);
+        Log.e("password",strings[2]);
         Request request = new Request.Builder()
                 .url(AuthRequest.url+"users")
                 .post(formBody)
                 .build();
-
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             else{

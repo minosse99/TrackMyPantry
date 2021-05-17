@@ -1,5 +1,9 @@
 package com.example.mypantry.data;
 
+import android.os.AsyncTask;
+
+import com.example.mypantry.connection.AuthToken;
+import com.example.mypantry.connection.Registration;
 import com.example.mypantry.data.model.LoggedInUser;
 import com.example.mypantry.connection.AuthRequest;
 
@@ -19,13 +23,16 @@ public class LoginDataSource{
         this.email = email;
         LoggedInUser user = null;
         try {
-            if(username != null){
-                AuthRequest.register(username,email,password);
-                user = new LoggedInUser(java.util.UUID.randomUUID().toString(),
-                        email);
-
-            }else
-                user = AuthRequest.login(email,password);
+            if(username != null) {
+                Registration register = new Registration();
+                String id = String.valueOf(register.execute(username, email, password));
+                //id instanceof AsyncTask<String, Void, LoggedInUser> ? ((AsyncTask<String, Void, LoggedInUser>) id) : null;
+                // user = new LoggedInUser(java.util.UUID.randomUUID().toString(),
+                //        email);
+                user = new LoggedInUser(id,AuthToken.getUsername());
+            }else {
+                user = AuthRequest.login(email, password);
+            }
             // TODO: handle loggedInUser authentication
             return new Result.Success<>(user);
         } catch (Exception e) {

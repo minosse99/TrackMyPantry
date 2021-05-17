@@ -23,7 +23,7 @@ public class AuthRequest {
     private static final OkHttpClient client = new OkHttpClient();
     private static String tokenSession = null;
 
-
+/*
     public static void register(String username,String email, String password){
         final int[] result = {0};
         RequestBody formBody = new FormBody.Builder()
@@ -48,6 +48,7 @@ public class AuthRequest {
         }
         });
     }
+*/
 
     public static LoggedInUser login(String email, String password){
        RequestBody formBody = new FormBody.Builder()
@@ -66,6 +67,7 @@ public class AuthRequest {
             @Override
             public void onResponse( Call call, Response response) throws IOException {
                 String res = response.body().string();
+                Log.e("response login",res);
                 try {
                     JSONObject object = (JSONObject) new JSONTokener(res).nextValue();
                     String token = object.getString("accessToken");

@@ -7,9 +7,9 @@ import com.example.mypantry.connection.AuthToken;
  */
 public class LoggedInUser {
 
-    private String userId;
+    private  String userId;
     private String displayName;
-    private  String token;
+
 
     public LoggedInUser(String userId, String displayName) {
         this.userId = userId;
@@ -24,6 +24,5 @@ public class LoggedInUser {
         return displayName;
     }
 
-    public String getToken(){ return token; }
 
 }
