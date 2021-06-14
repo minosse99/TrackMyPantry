@@ -1,0 +1,34 @@
+Starting a Gradle Daemon, 1 incompatible and 2 stopped Daemons could not be reused, use --status for details
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl NO-SOURCE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:compileDebugRenderscript NO-SOURCE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+
+> Task :app:processDebugMainManifest
+[com.android.support:animated-vector-drawable:28.0.0] C:\Users\simon\.gradle\caches\transforms-2\files-2.1\d8652eecaec1541e3b83ea201124b443\animated-vector-drawable-28.0.0\AndroidManifest.xml Warning:
+	Package name 'android.support.graphics.drawable' used in: com.android.support:animated-vector-drawable:28.0.0, com.android.support:support-vector-drawable:28.0.0.
+[com.google.android.gms:play-services-vision:11.0.2] C:\Users\simon\.gradle\caches\transforms-2\files-2.1\590ce78fe44c7a27e9c2e0f2b9fc2f1a\play-services-vision-11.0.2\AndroidManifest.xml Warning:
+	Package name 'com.google.android.gms.vision' used in: com.google.android.gms:play-services-vision:11.0.2, com.google.android.gms:play-services-vision-common:11.0.2.
+
+> Task :app:processDebugManifest
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:compileDebugSources UP-TO-DATE
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+Terminare il processo batch (S/N)? 
