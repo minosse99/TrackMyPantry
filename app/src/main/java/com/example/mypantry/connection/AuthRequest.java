@@ -1,7 +1,9 @@
 package com.example.mypantry.connection;
 
+import android.content.Intent;
 import android.util.Log;
 
+import com.example.mypantry.Utils;
 import com.example.mypantry.data.model.LoggedInUser;
 
 import org.json.JSONException;
@@ -56,10 +58,13 @@ public class AuthRequest {
                 .add("password",password)
                 .build();
 
+        Log.i("body",formBody.toString());
         Request request = new Request.Builder()
                 .url(url+"auth/login")
                 .post(formBody)
                 .build();
+
+        Log.e("RequestBody", Utils.bodyToString(request));
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure( Call call, IOException e) { e.printStackTrace();}
@@ -69,14 +74,17 @@ public class AuthRequest {
                 String res = response.body().string();
                 Log.e("response login",res);
                 try {
-                    JSONObject object = (JSONObject) new JSONTokener(res).nextValue();
-                    String token = object.getString("accessToken");
-                    Log.d("ACCESS TOKEN",token);
-                    AuthToken.assign(token,email);
+                    if(!(response.code() > 400)) {
 
+                        JSONObject object = (JSONObject) new JSONTokener(res).nextValue();
+                        String token = object.getString("accessToken");
+                        Log.d("ACCESS TOKEN", token);
+                        AuthToken.assign(token, email);
 
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                 }
 
             }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="196dp"
+        android:background="#FFFFBB33"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/trackmypantry" />
+
+    <TextView
+        android:id="@+id/explainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aggiungi i dettagli del tuo prodotto"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/nameProduct"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="" />
+
+    <EditText
+        android:id="@+id/descriptionProduct"
+        android:layout_width="401dp"
+        android:layout_height="127dp"
+        android:ems="10"
+        android:hint="Describes your product"
+        android:gravity="start|top"
+        android:inputType="" />
+
+</LinearLayout>

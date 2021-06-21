@@ -7,6 +7,8 @@ import com.example.mypantry.connection.*;
 
 import java.io.IOException;
 
+import javax.security.auth.login.LoginException;
+
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
@@ -32,8 +34,11 @@ public class LoginDataSource{
         }else {
             user = AuthRequest.login(email, password);
         }
-        // TODO: handle loggedInUser authentication
-        return new Result.Success<>(user);
+        Thread.sleep(500);                  //wait async call on Auth.login
+        if(AuthToken.isNull())
+            return new Result.Error(new LoginException("No account found"));
+        else
+            return new Result.Success<>(user);
     } catch (Exception e) {
         return new Result.Error(new IOException("Error logging in", e));
     }
