@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.mypantry.ActivitySettings;
 import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.R;
 import com.example.mypantry.ui.login.DialogLogout;
@@ -152,5 +154,12 @@ public class MainActivity extends AppCompatActivity {
             navImage.setVisibility(View.VISIBLE);
             btnLogin.setText("Log Out");
         }
+    }
+
+    public void goToSettings(MenuItem item) {
+        Intent intent = new Intent();
+        ComponentName component = new ComponentName(this, ActivitySettings.class);
+        intent.setComponent(component);
+        startActivity(intent);
     }
 }
