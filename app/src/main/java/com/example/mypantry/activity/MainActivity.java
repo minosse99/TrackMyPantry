@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         AuthToken.importToken(this);
-       checkAuthUI();
+        checkAuthUI();
         super.onStart();
     }
 

@@ -24,6 +24,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import com.example.mypantry.DBManager;
 import com.example.mypantry.ItemRecyclerViewAdapter;
 import com.example.mypantry.R;
+import com.example.mypantry.Utils;
 import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.data.ITEM;
 import com.example.mypantry.dummy.DummyItem;
@@ -37,7 +38,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private static DBManager db = null;
+    public static DBManager db = null;
     private List<ListItem> test = null;
     private RecyclerView recyclerView = null;
     private View view;
@@ -49,11 +50,12 @@ public class HomeFragment extends Fragment {
                 new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         this.view = root;
-        if(test == null && recyclerView == null) {
-            test = new ArrayList<>();
-            recyclerView = (RecyclerView) root.findViewById(R.id.list);
-            db = new DBManager(getActivity());
-        }
+        if(test == null ){ test = new ArrayList<>();}
+        if(recyclerView == null){recyclerView = (RecyclerView) root.findViewById(R.id.list); }
+        if(db == null) { db = new DBManager(getActivity()); }
+
+
+
         return root;
     }
 
@@ -69,16 +71,14 @@ public class HomeFragment extends Fragment {
             test.clear();
 
             Cursor cursor = db.query();
-            while(cursor.moveToNext()){
+                while (cursor.moveToNext()) {
 
-                String subject = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_SUBJECT));
-                int id = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_ID));
-                String text = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
-//        String date = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
+                    String subject = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_SUBJECT));
+                    int id = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_ID));
+                    String text = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
 
-                test.add(new ListItem(id, new DummyItem(text,subject)));
+                    test.add(new ListItem(id, new DummyItem(text, subject)));
             }
-
         }catch (CursorIndexOutOfBoundsException e){
             Log.e("Error : checkDB", String.valueOf(e));
         }

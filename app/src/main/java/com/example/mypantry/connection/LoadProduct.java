@@ -4,6 +4,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.mypantry.Utils;
+import com.example.mypantry.ui.home.HomeFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -62,6 +63,8 @@ public class LoadProduct {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Log.e("RES",response.body().string());
+
+                HomeFragment.db.save(barcode,name,describes);
             }
         });
     }

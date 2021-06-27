@@ -3,18 +3,17 @@ package com.example.mypantry.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -22,24 +21,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mypantry.R;
+import com.example.mypantry.Utils;
 import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.connection.LoadProduct;
 import com.example.mypantry.connection.ProductRequest;
+import com.example.mypantry.ui.home.HomeFragment;
+import com.example.mypantry.ui.login.LoginActivity;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
 public class ActivitySearch extends AppCompatActivity{
 
+    public static JSONArray listProduct;
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -64,30 +66,29 @@ public class ActivitySearch extends AppCompatActivity{
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
                 String barcode = getBarcode();
-                ProductRequest req = new ProductRequest();
-                String a = String.valueOf(req.execute(barcode));
-                loadingProgressBar.setVisibility(View.GONE);
-            }
+
+                if(AuthToken.isNull()){
+                    LoginIntent();
+                }else if(!barcode.isEmpty()){
+                    ProductRequest.requestList(barcode);
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                    waitListProduct();
+                    loadingProgressBar.setVisibility(View.GONE);
+                    try {
+                        onCreateChooseDialog(v).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }}}
         });
 
         Button btnScan = findViewById(R.id.scanButton);
         btnScan.setOnClickListener(v->{
-/*
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("add a new product in a list")
-                    .setTitle("Adding");
-            Dialog dialog = new Dialog(this);
-            builder.show();*/
             onCreateDialog(v).show();
         });
     }
 
     private void initialiseDetectorsAndSources() {
-
-        //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
-
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
@@ -109,12 +110,9 @@ public class ActivitySearch extends AppCompatActivity{
                         ActivityCompat.requestPermissions(ActivitySearch.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
 
             @Override
@@ -138,10 +136,7 @@ public class ActivitySearch extends AppCompatActivity{
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
-
-
                     barcodeText.post(new Runnable() {
-
                         @Override
                         public void run() {
 
@@ -151,15 +146,12 @@ public class ActivitySearch extends AppCompatActivity{
                                 barcodeText.setText(barcodeData);
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                             } else {
-
                                 barcodeData = barcodes.valueAt(0).displayValue;
                                 barcodeText.setText(barcodeData);
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
-
                             }
                         }
                     });
-
                 }
             }
         });
@@ -198,11 +190,8 @@ public class ActivitySearch extends AppCompatActivity{
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
-
                         EditText name = customLayout.findViewById(R.id.nameProduct);
                         EditText description = customLayout.findViewById(R.id.descriptionProduct);
-
 
                         Log.e("name", name.getText().toString());
                         try {
@@ -210,20 +199,65 @@ public class ActivitySearch extends AppCompatActivity{
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        //Editable names = name.getEditableText();
-                        //                  Log.e("name", name.getText().toString());
-                        //EditText description = (EditText) findViewById(R.id.descriptionProduct);
-                        //String descr = description.getText().toString();
-                        //Log.e("description",describeProduct.getText().toString());
-                        //MainActivity.saveElement("1234567",name.getText().toString(),description.getText().toString());
+
                         onStart();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                     }
                 });
         return builder.create();
     }
+
+    public Dialog onCreateChooseDialog(View v) throws JSONException {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Seleziona un elemento")
+                    .setItems(Utils.getCharSequence(listProduct), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // The 'which' argument contains the index position
+                            // of the selected item
+                            try {
+                                Object obj = listProduct.get(which);
+                                Log.e("name", Utils.getData(obj, "name"));
+                                Log.e("description", Utils.getData(obj, "description"));
+                                Log.e("barcode", Utils.getData(obj, "barcode"));
+                                HomeFragment.db.save(Utils.getData(obj, "barcode"), Utils.getData(obj, "name"), Utils.getData(obj, "description"));
+                                Intent intent = new Intent();
+                                ComponentName component =
+                                        new ComponentName(getApplicationContext(), MainActivity.class);
+                                intent.setComponent(component);
+                                startActivity(intent);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).setPositiveButton(R.string.aggiungi, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    onCreateDialog(v).show();
+                }
+            });
+            return builder.create();
+        }
+        private void LoginIntent(){
+            Intent intent = new Intent();
+            ComponentName component = new ComponentName(getApplicationContext(), LoginActivity.class);
+            intent.setComponent(component);
+            startActivity(intent);
+        }
+        private void waitListProduct(){
+            while(listProduct==null){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }}
+        }
 }

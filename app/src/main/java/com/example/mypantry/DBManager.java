@@ -17,13 +17,13 @@ public class DBManager{
         dbhelper=new ItemDBHelper(context);
     }
 
-    public void save(String sub, String txt, String date)
+    public void save(String object, String barcode, String description)
     {
         SQLiteDatabase db=dbhelper.getWritableDatabase();
         ContentValues cv=new ContentValues();
-        cv.put(ITEM.FIELD_SUBJECT, sub);
-        cv.put(ITEM.FIELD_TEXT, txt);
-        cv.put(ITEM.FIELD_DATE, date);
+        cv.put(ITEM.FIELD_SUBJECT, barcode);
+        cv.put(ITEM.FIELD_TEXT, object);
+        cv.put(ITEM.FIELD_DATE, description);
         try
         {
             db.insert(ITEM.TBL_NAME, null,cv);
