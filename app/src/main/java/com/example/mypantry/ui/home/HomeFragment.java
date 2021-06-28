@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
         if(db == null) { db = new DBManager(getActivity()); }
 
 
-/*        db.save("Patate","304323943025","Patate al forno ",1,"2974833240");
+    /*    db.save("Patate","304323943025","Patate al forno ",1,"2974833240");
 
         db.save("Wurstel ","3083948275025","Wurstel di Suino ",1,"7234598970");
         db.save("Fragola","304323943025","Fragole ",1,"111123831220");

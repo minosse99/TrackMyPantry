@@ -1,10 +1,9 @@
-package com.example.mypantry.ui.gallery;
+package com.example.mypantry.ui.shoppingList;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,25 +22,24 @@ import com.example.mypantry.R;
 import com.example.mypantry.data.ITEM;
 import com.example.mypantry.dummy.DummyItem;
 import com.example.mypantry.ui.home.HomeFragment;
-import com.example.mypantry.ui.login.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class GalleryFragment extends Fragment {
+public class ShoppingListFragment extends Fragment {
 
     private DBManager db;
     private List<DummyItem> list;
-    private GalleryViewModel galleryViewModel;
+    private ShoppingListViewModel shoppingListViewModel;
     private String text;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if(text == null){text = "";}
-        galleryViewModel =
-                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        shoppingListViewModel =
+                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ShoppingListViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
         Button btnShare = root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v->{
@@ -53,7 +51,7 @@ public class GalleryFragment extends Fragment {
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
         });
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        shoppingListViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
@@ -63,8 +61,6 @@ public class GalleryFragment extends Fragment {
         if(db == null) { db = HomeFragment.getDBistance(); }
 
         return root;
-
-
     }
 
     @Override
@@ -88,15 +84,13 @@ public class GalleryFragment extends Fragment {
                 int quantity = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_QUANTITY));
                 //list.add(new DummyItem(id,name, description, quantity, barcode));
 
-
                 text = text.concat("\n"+quantity+"- "+name+" : "+description+" "+"\n");
-
-
             }
         }catch (CursorIndexOutOfBoundsException e){
             Log.e("Error : checkDB", String.valueOf(e));
         }
         EditText edittext = (EditText) Objects.requireNonNull(getView()).findViewById(R.id.editText);
+        edittext.setText("", TextView.BufferType.EDITABLE);
         edittext.append(text);
     }
 }

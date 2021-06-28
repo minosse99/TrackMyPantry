@@ -1,14 +1,14 @@
-package com.example.mypantry.ui.gallery;
+package com.example.mypantry.ui.shoppingList;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class ShoppingListViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public ShoppingListViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("La tua lista:");
     }
