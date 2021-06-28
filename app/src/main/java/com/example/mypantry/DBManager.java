@@ -4,9 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.example.mypantry.data.ITEM;
 
+import com.example.mypantry.dummy.DummyItem;
 import com.example.mypantry.ui.login.ListItem;
 
 public class DBManager{
@@ -17,33 +19,33 @@ public class DBManager{
         dbhelper=new ItemDBHelper(context);
     }
 
-    public void save(String object, String barcode, String description)
+    public void save(String object, String barcode, String description,int quantity,String productid)
     {
         SQLiteDatabase db=dbhelper.getWritableDatabase();
         ContentValues cv=new ContentValues();
+        cv.put(ITEM.FIELD_PRODUCTID,productid);
         cv.put(ITEM.FIELD_SUBJECT, barcode);
         cv.put(ITEM.FIELD_TEXT, object);
         cv.put(ITEM.FIELD_DATE, description);
-        try
-        {
+        cv.put(ITEM.FIELD_QUANTITY,quantity);
+        try {
             db.insert(ITEM.TBL_NAME, null,cv);
         }
-        catch (SQLiteException sqle)
-        {
-// Gestione delle eccezioni
+        catch (SQLiteException sqle) {
+            Log.e("DB",sqle.getMessage());
         }
     }
 
-    public void save(ListItem listItem){
-        save(listItem.getItem().content,listItem.getItem().details,"-");
+    public void save(DummyItem item){
+        save(item.name,item.barcode,item.details,item.quantity,item.productID);
     }
 
-    public boolean delete(long id)
+    public boolean delete(String id)
     {
         SQLiteDatabase db=dbhelper.getWritableDatabase();
         try
         {
-            if (db.delete(ITEM.TBL_NAME, ITEM.FIELD_ID+"=?", new String[]{Long.toString(id)})>0)
+            if (db.delete(ITEM.TBL_NAME, ITEM.FIELD_PRODUCTID+"=?", new String[]{(id)})>0)
                 return true;
             return false;
         }

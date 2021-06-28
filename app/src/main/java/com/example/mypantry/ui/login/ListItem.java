@@ -3,19 +3,19 @@ package com.example.mypantry.ui.login;
 import com.example.mypantry.dummy.DummyItem;
 
 public class ListItem {
-    private Integer key;
+    private String key;
     private DummyItem item;
 
-    public ListItem(Integer key,DummyItem item) {
+    public ListItem(String key, DummyItem item) {
         this.key = key;
         this.item = item;
     }
 
-    public Integer getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(Integer key) {
+    public void setKey(String key) {
         this.key = key;
     }
 

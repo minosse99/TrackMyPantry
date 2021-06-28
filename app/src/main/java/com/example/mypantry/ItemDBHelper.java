@@ -9,14 +9,16 @@ import com.example.mypantry.data.ITEM;
 public class ItemDBHelper extends SQLiteOpenHelper {
 
     public ItemDBHelper(Context context) {
-        super(context, "pantryDB", null , 1);
+        super(context, "pantryDB", null , 2);
     }
 
         @Override
         public void onCreate (SQLiteDatabase db)
         {
+
             String q = "CREATE TABLE " + ITEM.TBL_NAME +
-                    " ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " ( "+ ITEM.FIELD_PRODUCTID+" TEXT PRIMARY KEY," +
+                    ITEM.FIELD_QUANTITY+" NUMBER,"+
                     ITEM.FIELD_SUBJECT + " TEXT," +
                     ITEM.FIELD_TEXT + " TEXT," +
                     ITEM.FIELD_DATE + " TEXT)";

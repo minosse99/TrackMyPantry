@@ -34,7 +34,7 @@ public class LoginDataSource{
         }else {
             user = AuthRequest.login(email, password);
         }
-        Thread.sleep(500);                  //wait async call on Auth.login
+        Thread.sleep(700);                  //wait async call on Auth.login
         if(AuthToken.isNull())
             return new Result.Error(new LoginException("No account found"));
         else

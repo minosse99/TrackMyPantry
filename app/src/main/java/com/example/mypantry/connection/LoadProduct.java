@@ -64,7 +64,8 @@ public class LoadProduct {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Log.e("RES",response.body().string());
 
-                HomeFragment.db.save(barcode,name,describes);
+
+                //HomeFragment.db.save(barcode,name,describes);
             }
         });
     }

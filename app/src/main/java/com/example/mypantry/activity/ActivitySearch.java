@@ -82,10 +82,10 @@ public class ActivitySearch extends AppCompatActivity{
                     }}}
         });
 
-        Button btnScan = findViewById(R.id.scanButton);
+        /*Button btnScan = findViewById(R.id.scanButton);
         btnScan.setOnClickListener(v->{
             onCreateDialog(v).show();
-        });
+        });*/
     }
 
     private void initialiseDetectorsAndSources() {
@@ -220,15 +220,31 @@ public class ActivitySearch extends AppCompatActivity{
                             // of the selected item
                             try {
                                 Object obj = listProduct.get(which);
+                                String name =  Utils.getData(obj, "name");
+                                String description = Utils.getData(obj, "description");
+                                String barcode = Utils.getData(obj, "barcode");
+
                                 Log.e("name", Utils.getData(obj, "name"));
                                 Log.e("description", Utils.getData(obj, "description"));
                                 Log.e("barcode", Utils.getData(obj, "barcode"));
-                                HomeFragment.db.save(Utils.getData(obj, "barcode"), Utils.getData(obj, "name"), Utils.getData(obj, "description"));
+                                HomeFragment.db.save( Utils.getData(obj, "name"),Utils.getData(obj, "barcode"), Utils.getData(obj, "description"),1,Utils.getData(obj,"productId"));
+
+                               //  db.save("Patate","304323943025","Patate al forno ",1,"2974833240");
+                                /*final String[] stars = {"1 Stella", "2 Stelle ","3 Stelle", "4 Stelle","5 Stelle"};
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                                builder.setTitle("Valuta "+name )
+                                        .setMessage("Valuta il tuo elemento assegnando un punteggio da 1 a 5");
+
+                                builder.show();*/
+
+
                                 Intent intent = new Intent();
                                 ComponentName component =
                                         new ComponentName(getApplicationContext(), MainActivity.class);
                                 intent.setComponent(component);
                                 startActivity(intent);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -53,6 +53,7 @@ public class AuthRequest {
 */
 
     public static LoggedInUser login(String email, String password){
+
        RequestBody formBody = new FormBody.Builder()
                 .add("email",email)
                 .add("password",password)

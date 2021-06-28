@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">MyPantry</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Login</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
+
     <string name="invalid_email">Not a valid Email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -26,6 +27,8 @@
     <string name="channel_description">Track My Pantry Stop</string>
     <string name="already_register_log_in">Already Register? Log In</string>
     <string name="sign_in">Sign in</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="username">Username</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
