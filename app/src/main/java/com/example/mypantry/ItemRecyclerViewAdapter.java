@@ -3,6 +3,7 @@ package com.example.mypantry;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +76,7 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
             mContentView = (TextView) view.findViewById(R.id.content);
             mDescriptionView = (TextView) view.findViewById(R.id.description);
 
-            Button btnAdd = (Button) view.findViewById(R.id.addBtn);//press Add Button to increment Quantity
+            ImageButton btnAdd = (ImageButton) view.findViewById(R.id.addBtn);//press Add Button to increment Quantity
             btnAdd.setOnClickListener(v-> {
                 if(mValues.remove(mItem)) {
                     DummyItem a = mItem.getItem();
@@ -85,7 +87,7 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
                     });
 
 
-            Button btnSub = (Button) view.findViewById(R.id.dltBtn);
+            ImageButton btnSub = (ImageButton) view.findViewById(R.id.dltBtn);
             btnSub.setOnClickListener(v-> {         //press Sub Button to decrement Quantity
                 if(mItem.getItem().quantity > 1 && mValues.remove(mItem)) {
                     DummyItem a = mItem.getItem();

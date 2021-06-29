@@ -1,44 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+
     android:background="@color/cardview_dark_background"
     android:maxHeight="25dp"
     android:minHeight="20dp">
 
+    <android.support.constraint.ConstraintLayout
+        android:background="@drawable/layout_base"
+        android:layout_width="400dp"
+        android:layout_height="80dp">
 
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:layout_margin="0.5dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="44dp"
+            android:layout_height="36dp"
+            android:layout_margin="0.5dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/description"
+            app:layout_constraintHorizontal_bias="0.771"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="222dp"
-        android:layout_height="match_parent"
-        android:layout_margin="0.5dp"
-        android:fontFamily="sans-serif-medium"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="211dp"
+            android:layout_height="43dp"
+            android:layout_margin="0.5dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/dltBtn"
+            app:layout_constraintHorizontal_bias="0.931"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.513" />
 
-    <Button
-        android:id="@+id/dltBtn"
-        android:layout_width="54dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="0dp"
-        android:layout_weight="0.2"
-        android:background="#F44336"
-        android:drawableTop="@drawable/ic_baseline_remove_24" />
+        <ImageButton
+            android:id="@+id/dltBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="300dp"
+            android:layout_weight="0.2"
+            android:background="@drawable/button_less"
+            android:src="@drawable/ic_baseline_remove_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6" />
 
-    <Button
-        android:id="@+id/addBtn"
-        android:layout_width="53dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="0dp"
-        android:layout_weight="1"
-        android:background="#4CAF50"
-        android:drawableTop="@drawable/ic_baseline_add_24" />
+        <ImageButton
+            android:id="@+id/addBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_add"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/dltBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6" />
+    </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
