@@ -48,8 +48,7 @@ public class Utils {
 
 
     public static JSONObject getJSONObject(Object obj) throws JSONException {
-        JSONObject jobj = new JSONObject(obj.toString());
-        return jobj;
+        return new JSONObject(obj.toString());
     }
 
     public static String getData(Object obj,String name) throws JSONException { //usefull for only string types

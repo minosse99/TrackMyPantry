@@ -29,21 +29,14 @@ public class LoadProduct {
 
 
     public static void addProduct(String name, String describes, String barcode) throws JSONException {
-     /*   RequestBody formBody = new FormBody.Builder()
-                .add("token",ProductRequest.tokenSession)
-                .add("name",name)
-                .add("description",describes)
-                .add("barcode",barcode)
-                .add("test", String.valueOf(Boolean.TRUE))
-                .build();
-       */
+
         MediaType JSON = MediaType.parse("application/json");
         JSONObject json = new JSONObject();
         json.put("token",ProductRequest.tokenSession);
         json.put("name",name);
         json.put("description",describes);
         json.put("barcode",barcode);
-        json.put("test",Boolean.valueOf(true));
+        json.put("test",Boolean.valueOf(false));
 
         RequestBody rb = RequestBody.create(JSON, String.valueOf(json));
 
@@ -53,19 +46,30 @@ public class LoadProduct {
                 .post(rb)
                 .build();
 
-
+        Log.e("PROVA","PROVA");
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                Log.e("FAL","onFailure");
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Log.e("RES",response.body().string());
+          //      Log.e("RES",response.body().string());
+                String res = response.body().string();
+                try {
+                    JSONObject obj = new JSONObject(res);
+                    String name =  Utils.getData(obj, "name");
+                    String description = Utils.getData(obj, "description");
+                    String barcode = Utils.getData(obj, "barcode");
+                    String id = Utils.getData(obj,"id");
 
+                    Log.e("CONSOLEE",name+barcode+description+id);
+                    HomeFragment.db.save( name,barcode, description,1,id);
 
-                //HomeFragment.db.save(barcode,name,describes);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

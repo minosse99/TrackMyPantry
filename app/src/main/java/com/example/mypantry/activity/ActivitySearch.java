@@ -69,7 +69,7 @@ public class ActivitySearch extends AppCompatActivity{
                 String barcode = getBarcode();
 
                 if(AuthToken.isNull()){
-                    LoginIntent();
+                    loginIntent();
                 }else if(!barcode.isEmpty()){
                     ProductRequest.requestList(barcode);
                     loadingProgressBar.setVisibility(View.VISIBLE);
@@ -81,11 +81,6 @@ public class ActivitySearch extends AppCompatActivity{
                         e.printStackTrace();
                     }}}
         });
-
-        /*Button btnScan = findViewById(R.id.scanButton);
-        btnScan.setOnClickListener(v->{
-            onCreateDialog(v).show();
-        });*/
     }
 
     private void initialiseDetectorsAndSources() {
@@ -97,7 +92,6 @@ public class ActivitySearch extends AppCompatActivity{
                 .setRequestedPreviewSize(1920, 1080)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
-
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -139,7 +133,6 @@ public class ActivitySearch extends AppCompatActivity{
                     barcodeText.post(new Runnable() {
                         @Override
                         public void run() {
-
                             if (barcodes.valueAt(0).email != null) {
                                 barcodeText.removeCallbacks(null);
                                 barcodeData = barcodes.valueAt(0).email.address;
@@ -196,10 +189,8 @@ public class ActivitySearch extends AppCompatActivity{
                         Log.e("name", name.getText().toString());
                         try {
                             LoadProduct.addProduct(name.getText().toString(), description.getText().toString(), getBarcode());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                            //homeIntent();
+                        } catch (JSONException e) {e.printStackTrace(); }
                         onStart();
                     }
                 })
@@ -216,58 +207,28 @@ public class ActivitySearch extends AppCompatActivity{
             builder.setTitle("Seleziona un elemento")
                     .setItems(Utils.getCharSequence(listProduct), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // The 'which' argument contains the index position
-                            // of the selected item
                             try {
                                 Object obj = listProduct.get(which);
                                 String name =  Utils.getData(obj, "name");
                                 String description = Utils.getData(obj, "description");
                                 String barcode = Utils.getData(obj, "barcode");
-
-                                Log.e("name", Utils.getData(obj, "name"));
-                                Log.e("description", Utils.getData(obj, "description"));
-                                Log.e("barcode", Utils.getData(obj, "barcode"));
-                                HomeFragment.db.save( Utils.getData(obj, "name"),Utils.getData(obj, "barcode"), Utils.getData(obj, "description"),1,Utils.getData(obj,"productId"));
-
-                               //  db.save("Patate","304323943025","Patate al forno ",1,"2974833240");
-                                /*final String[] stars = {"1 Stella", "2 Stelle ","3 Stelle", "4 Stelle","5 Stelle"};
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-                                builder.setTitle("Valuta "+name )
-                                        .setMessage("Valuta il tuo elemento assegnando un punteggio da 1 a 5");
-
-                                builder.show();*/
-
-
-                                Intent intent = new Intent();
-                                ComponentName component =
-                                        new ComponentName(getApplicationContext(), MainActivity.class);
-                                intent.setComponent(component);
-                                startActivity(intent);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                                String id = Utils.getData(obj,"id");
+                                HomeFragment.db.save( name,barcode, description,1,id);
+                                homeIntent();
+                            } catch (JSONException e) {e.printStackTrace(); }
                         }
                     }).setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            }).setPositiveButton(R.string.aggiungi, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    onCreateDialog(v).show();
-                }
-            });
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    }).setPositiveButton(R.string.aggiungi, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onCreateDialog(v).show();
+                        }
+                    });
             return builder.create();
         }
-        private void LoginIntent(){
-            Intent intent = new Intent();
-            ComponentName component = new ComponentName(getApplicationContext(), LoginActivity.class);
-            intent.setComponent(component);
-            startActivity(intent);
-        }
+
         private void waitListProduct(){
             while(listProduct==null){
                 try {
@@ -275,5 +236,20 @@ public class ActivitySearch extends AppCompatActivity{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }}
+        }
+
+        private void loginIntent(){
+            Intent intent = new Intent();
+            ComponentName component = new ComponentName(getApplicationContext(), LoginActivity.class);
+            intent.setComponent(component);
+            startActivity(intent);
+        }
+
+        private void homeIntent(){
+            Intent intent = new Intent();
+            ComponentName component =
+                    new ComponentName(getApplicationContext(), MainActivity.class);
+            intent.setComponent(component);
+            startActivity(intent);
         }
 }

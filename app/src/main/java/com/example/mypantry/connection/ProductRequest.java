@@ -40,16 +40,13 @@ public class ProductRequest {
                 .header("Authorization", "Bearer " + AuthToken.getToken())
                 .build();
 
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
                 String res = response.body().string();
                 JSONObject object = null;
                 try {
@@ -60,12 +57,9 @@ public class ProductRequest {
                     tokenSession = token;
                     Log.e("token", token);
                     Log.e("Array", product.toString());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
     }
