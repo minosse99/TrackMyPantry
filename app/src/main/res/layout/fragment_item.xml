@@ -19,6 +19,8 @@
             android:layout_width="44dp"
             android:layout_height="36dp"
             android:layout_margin="0.5dp"
+            android:textColor="#B1BCBE"
+            android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/description"
@@ -28,7 +30,9 @@
 
         <TextView
             android:id="@+id/description"
+            android:textAlignment="center"
             android:layout_width="211dp"
+            android:textColor="#B1BCBE"
             android:layout_height="43dp"
             android:layout_margin="0.5dp"
             android:layout_marginEnd="8dp"

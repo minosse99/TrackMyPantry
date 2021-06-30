@@ -64,7 +64,7 @@ public class LoadProduct {
                     String barcode = Utils.getData(obj, "barcode");
                     String id = Utils.getData(obj,"id");
 
-                    Log.e("CONSOLEE",name+barcode+description+id);
+                    Log.e("RES",response.toString());
                     HomeFragment.db.save( name,barcode, description,1,id);
 
                 } catch (JSONException e) {

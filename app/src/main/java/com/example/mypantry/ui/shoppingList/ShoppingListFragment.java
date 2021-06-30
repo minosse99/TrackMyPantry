@@ -67,13 +67,23 @@ public class ShoppingListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         compileBody();
+        updateText();
+    }
+
+    private void updateText() {
+        EditText edittext = (EditText) Objects.requireNonNull(getView()).findViewById(R.id.editText);
+        edittext.setText(" ");
+        for (DummyItem element:list
+             ) {
+            edittext.append("\n"+element.quantity+"- "+element.name+" : "+element.details+" "+"\n");
+        }
     }
 
 
     public void compileBody(){
         try {
-            list.clear();
 
+            list.clear();
             Cursor cursor = db.query();
             while (cursor.moveToNext()) {
 
@@ -82,15 +92,13 @@ public class ShoppingListFragment extends Fragment {
                 String name = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
                 String description = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
                 int quantity = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_QUANTITY));
-                //list.add(new DummyItem(id,name, description, quantity, barcode));
+                list.add(new DummyItem(id,name, description, quantity, barcode));
 
-                text = text.concat("\n"+quantity+"- "+name+" : "+description+" "+"\n");
+                Log.e("LIST",text);
             }
         }catch (CursorIndexOutOfBoundsException e){
             Log.e("Error : checkDB", String.valueOf(e));
         }
-        EditText edittext = (EditText) Objects.requireNonNull(getView()).findViewById(R.id.editText);
-        edittext.setText("", TextView.BufferType.EDITABLE);
-        edittext.append(text);
+
     }
 }
