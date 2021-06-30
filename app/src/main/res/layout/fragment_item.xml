@@ -2,18 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="2dp"
 
-    android:background="@color/cardview_dark_background"
     android:maxHeight="25dp"
     android:minHeight="20dp">
 
     <android.support.constraint.ConstraintLayout
-        android:background="@drawable/layout_base"
-        android:layout_width="400dp"
-        android:layout_height="80dp">
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:background="@drawable/layout_base">
 
         <TextView
             android:id="@+id/content"
@@ -37,23 +36,24 @@
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dltBtn"
-            app:layout_constraintHorizontal_bias="0.931"
+            app:layout_constraintHorizontal_bias="0.897"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.513" />
+            app:layout_constraintVertical_bias="0.527" />
 
         <ImageButton
             android:id="@+id/dltBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="300dp"
             android:layout_weight="0.2"
             android:background="@drawable/button_less"
             android:src="@drawable/ic_baseline_remove_24"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.819"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.487" />
 
         <ImageButton
             android:id="@+id/addBtn"
@@ -65,10 +65,10 @@
             android:src="@drawable/ic_baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.166"
             app:layout_constraintStart_toEndOf="@+id/dltBtn"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.6" />
+            app:layout_constraintVertical_bias="0.487" />
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>
