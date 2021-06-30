@@ -27,6 +27,7 @@ import com.example.mypantry.Utils;
 import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.connection.LoadProduct;
 import com.example.mypantry.connection.ProductRequest;
+import com.example.mypantry.connection.VoteProduct;
 import com.example.mypantry.ui.home.HomeFragment;
 import com.example.mypantry.ui.login.LoginActivity;
 import com.google.android.gms.vision.CameraSource;
@@ -213,6 +214,7 @@ public class ActivitySearch extends AppCompatActivity{
                                 String description = Utils.getData(obj, "description");
                                 String barcode = Utils.getData(obj, "barcode");
                                 String id = Utils.getData(obj,"id");
+                                VoteProduct.voteProduct(id);
                                 HomeFragment.db.save( name,barcode, description,1,id);
                                 homeIntent();
                             } catch (JSONException e) {e.printStackTrace(); }
