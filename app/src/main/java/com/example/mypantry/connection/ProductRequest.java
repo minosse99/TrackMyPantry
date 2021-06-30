@@ -26,7 +26,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
 
-public class ProductRequest {
+public class ProductRequest{
     private static final OkHttpClient client = new OkHttpClient();
     public static String url = AuthRequest.url;
     public static String products = "products";

@@ -42,7 +42,7 @@ import java.io.IOException;
 
 public class ActivitySearch extends AppCompatActivity{
 
-    public static JSONArray listProduct;
+    public static volatile JSONArray listProduct;
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -50,7 +50,7 @@ public class ActivitySearch extends AppCompatActivity{
     private ToneGenerator toneGen1;
     protected TextView barcodeText;
     private String barcodeData;
-
+    private ProgressBar loadingProgressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,22 +60,21 @@ public class ActivitySearch extends AppCompatActivity{
         surfaceView = findViewById(R.id.surface_view);
         barcodeText = findViewById(R.id.barcode);
         //initialiseDetectorsAndSources();
-        final ProgressBar loadingProgressBar = findViewById(R.id.loadingSearch);
+         loadingProgressBar = findViewById(R.id.loadingSearch);
 
-
+        //loadingProgressBar.setVisibility(View.VISIBLE);
         Button btn = findViewById(R.id.searchButton);
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                listProduct = null;
                 String barcode = getBarcode();
-
                 if(AuthToken.isNull()){
                     loginIntent();
                 }else if(!barcode.isEmpty()){
-                    ProductRequest.requestList(barcode);
                     loadingProgressBar.setVisibility(View.VISIBLE);
+                    ProductRequest.requestList(barcode);
                     waitListProduct();
-                    loadingProgressBar.setVisibility(View.GONE);
                     try {
                         onCreateChooseDialog(v).show();
                     } catch (JSONException e) {
@@ -197,6 +196,7 @@ public class ActivitySearch extends AppCompatActivity{
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        loadingProgressBar.setVisibility(View.INVISIBLE);
                     }
                 });
         return builder.create();
@@ -209,6 +209,8 @@ public class ActivitySearch extends AppCompatActivity{
                     .setItems(Utils.getCharSequence(listProduct), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             try {
+
+                                loadingProgressBar.setVisibility(View.INVISIBLE);
                                 Object obj = listProduct.get(which);
                                 String name =  Utils.getData(obj, "name");
                                 String description = Utils.getData(obj, "description");
@@ -221,11 +223,14 @@ public class ActivitySearch extends AppCompatActivity{
                         }
                     }).setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {}
+                        public void onClick(DialogInterface dialog, int which) {
+                            loadingProgressBar.setVisibility(View.INVISIBLE);}
                     }).setPositiveButton(R.string.aggiungi, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             onCreateDialog(v).show();
+
+                            loadingProgressBar.setVisibility(View.INVISIBLE);
                         }
                     });
             return builder.create();
