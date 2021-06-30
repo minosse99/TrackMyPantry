@@ -8,8 +8,7 @@ import android.util.Log;
 
 import com.example.mypantry.data.ITEM;
 
-import com.example.mypantry.dummy.DummyItem;
-import com.example.mypantry.ui.login.ListItem;
+import com.example.mypantry.item.Item;
 
 public class DBManager{
 
@@ -36,8 +35,8 @@ public class DBManager{
         }
     }
 
-    public void save(DummyItem item){
-        save(item.name,item.barcode,item.details,item.quantity,item.productID);
+    public void save(Item item){
+        save(item.getName(),item.getBarcode(),item.getDetails(),item.getQuantity(),item.getProductID());
     }
 
     public boolean delete(String id)

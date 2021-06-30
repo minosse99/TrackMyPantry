@@ -20,7 +20,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import com.example.mypantry.DBManager;
 import com.example.mypantry.R;
 import com.example.mypantry.data.ITEM;
-import com.example.mypantry.dummy.DummyItem;
+import com.example.mypantry.item.Item;
 import com.example.mypantry.ui.home.HomeFragment;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.Objects;
 public class ShoppingListFragment extends Fragment {
 
     private DBManager db;
-    private List<DummyItem> list;
+    private List<Item> list;
     private ShoppingListViewModel shoppingListViewModel;
     private String text;
 
@@ -73,9 +73,9 @@ public class ShoppingListFragment extends Fragment {
     private void updateText() {
         EditText edittext = (EditText) Objects.requireNonNull(getView()).findViewById(R.id.editText);
         edittext.setText(" ");
-        for (DummyItem element:list
+        for (Item element:list
              ) {
-            edittext.append("\n"+element.quantity+"- "+element.name+" : "+element.details+" "+"\n");
+            edittext.append("\n"+element.getQuantity()+"- "+element.getName()+" : "+element.getDetails()+" "+"\n");
         }
     }
 
@@ -92,7 +92,7 @@ public class ShoppingListFragment extends Fragment {
                 String name = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
                 String description = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
                 int quantity = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_QUANTITY));
-                list.add(new DummyItem(id,name, description, quantity, barcode));
+                list.add(new Item(id,name, description, quantity, barcode));
 
                 Log.e("LIST",text);
             }

@@ -17,8 +17,8 @@ import com.example.mypantry.DBManager;
 import com.example.mypantry.ItemRecyclerViewAdapter;
 import com.example.mypantry.R;
 import com.example.mypantry.data.ITEM;
-import com.example.mypantry.dummy.DummyItem;
-import com.example.mypantry.ui.login.ListItem;
+import com.example.mypantry.item.Item;
+import com.example.mypantry.item.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
                     String name = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
                     String description = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
                     int quantity = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_QUANTITY));
-                    test.add(new ListItem(id, new DummyItem(id,name, description, quantity, barcode)));
+                    test.add(new ListItem(id, new Item(id,name, description, quantity, barcode)));
 
                     }
         }catch (CursorIndexOutOfBoundsException e){

@@ -1,12 +1,12 @@
-package com.example.mypantry.ui.login;
+package com.example.mypantry.item;
 
-import com.example.mypantry.dummy.DummyItem;
+import com.example.mypantry.item.Item;
 
 public class ListItem {
     private String key;
-    private DummyItem item;
+    private Item item;
 
-    public ListItem(String key, DummyItem item) {
+    public ListItem(String key, Item item) {
         this.key = key;
         this.item = item;
     }
@@ -19,11 +19,11 @@ public class ListItem {
         this.key = key;
     }
 
-    public DummyItem getItem() {
+    public Item getItem() {
         return item;
     }
 
-    public void setItem(DummyItem item) {
+    public void setItem(Item item) {
         this.item = item;
     }
 

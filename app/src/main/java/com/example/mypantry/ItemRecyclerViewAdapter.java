@@ -1,34 +1,24 @@
 package com.example.mypantry;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mypantry.activity.MainActivity;
-import com.example.mypantry.dummy.DummyItem;
-import com.example.mypantry.ui.login.ListItem;
+import com.example.mypantry.item.Item;
+import com.example.mypantry.item.ListItem;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
-
-import kotlin.random.URandomKt;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link Item}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
@@ -54,8 +44,8 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(String.valueOf(mValues.get(position).getItem().quantity));
-        holder.mDescriptionView.setText(mValues.get(position).getItem().name);
+        holder.mContentView.setText(String.valueOf(mValues.get(position).getItem().getQuantity()));
+        holder.mDescriptionView.setText(mValues.get(position).getItem().getName());
 }
 
     @Override
@@ -79,8 +69,8 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
             ImageButton btnAdd = (ImageButton) view.findViewById(R.id.addBtn);//press Add Button to increment Quantity
             btnAdd.setOnClickListener(v-> {
                 if(mValues.remove(mItem)) {
-                    DummyItem a = mItem.getItem();
-                    db.delete(mItem.getItem().productID);
+                    Item a = mItem.getItem();
+                    db.delete(mItem.getItem().getProductID());
                     db.save(a.add());
                 }
                 fragment.onStart();                                 //necessary to call onStart function for checkDB and update UI
@@ -89,13 +79,13 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
 
             ImageButton btnSub = (ImageButton) view.findViewById(R.id.dltBtn);
             btnSub.setOnClickListener(v-> {         //press Sub Button to decrement Quantity
-                if(mItem.getItem().quantity > 1 && mValues.remove(mItem)) {
-                    DummyItem a = mItem.getItem();
-                    db.delete(mItem.getItem().productID);
+                if(mItem.getItem().getQuantity() > 1 && mValues.remove(mItem)) {
+                    Item a = mItem.getItem();
+                    db.delete(mItem.getItem().getProductID());
                     db.save(a.sub());
-                }else if(mItem.getItem().quantity == 1){
+                }else if(mItem.getItem().getQuantity() == 1){
                     Snackbar.make(Objects.requireNonNull(fragment.getView()),"Elemento Eliminato",Snackbar.LENGTH_LONG).show();
-                    db.delete(mItem.getItem().productID);
+                    db.delete(mItem.getItem().getProductID());
                 }
                 fragment.onStart();
             });
@@ -103,7 +93,7 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
             mDescriptionView.setOnLongClickListener(v->{
                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getActivity());
 
-               builder.setTitle(mDescriptionView.getText()).setMessage("\nID Prodotto: "+mItem.getItem().productID+"\nDescription: "+mItem.getItem().details +"\nBarcode: "+mItem.getItem().barcode+"\nQuantity: "+mItem.getItem().quantity);
+               builder.setTitle(mDescriptionView.getText()).setMessage("\nID Prodotto: "+mItem.getItem().getProductID()+"\nDescription: "+mItem.getItem().getDetails() +"\nBarcode: "+mItem.getItem().getBarcode()+"\nQuantity: "+mItem.getItem().getQuantity());
 // Add the buttons
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
