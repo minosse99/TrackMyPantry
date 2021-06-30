@@ -67,6 +67,7 @@ public class LoadProduct {
                     Log.e("RES",response.toString());
                     HomeFragment.db.save( name,barcode, description,1,id);
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -42,7 +42,7 @@ import java.io.IOException;
 
 public class ActivitySearch extends AppCompatActivity{
 
-    public static volatile JSONArray listProduct;
+    public static JSONArray listProduct;
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -189,7 +189,7 @@ public class ActivitySearch extends AppCompatActivity{
                         Log.e("name", name.getText().toString());
                         try {
                             LoadProduct.addProduct(name.getText().toString(), description.getText().toString(), getBarcode());
-                            //homeIntent();
+                            homeIntent();
                         } catch (JSONException e) {e.printStackTrace(); }
                         onStart();
                     }
