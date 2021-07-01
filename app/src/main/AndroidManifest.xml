@@ -12,10 +12,6 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.MyPantry">
-        <activity
-            android:name=".ActivitySettings"
-            android:label="Settings"
-            />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
