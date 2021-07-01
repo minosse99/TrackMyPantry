@@ -1,6 +1,6 @@
 package com.example.mypantry.data;
 
-public class ITEM {
+public class DB_ITEM {
 
         public static final String FIELD_PRODUCTID = "id";            //id univoco
         public static final String FIELD_SUBJECT = "oggetto";   //barcode

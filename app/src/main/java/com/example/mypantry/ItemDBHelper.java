@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.mypantry.data.ITEM;
+import com.example.mypantry.data.DB_ITEM;
 
 public class ItemDBHelper extends SQLiteOpenHelper {
 
@@ -16,12 +16,12 @@ public class ItemDBHelper extends SQLiteOpenHelper {
         public void onCreate (SQLiteDatabase db)
         {
 
-            String q = "CREATE TABLE " + ITEM.TBL_NAME +
-                    " ( "+ ITEM.FIELD_PRODUCTID+" TEXT PRIMARY KEY," +
-                    ITEM.FIELD_QUANTITY+" NUMBER,"+
-                    ITEM.FIELD_SUBJECT + " TEXT," +
-                    ITEM.FIELD_TEXT + " TEXT," +
-                    ITEM.FIELD_DATE + " TEXT)";
+            String q = "CREATE TABLE " + DB_ITEM.TBL_NAME +
+                    " ( "+ DB_ITEM.FIELD_PRODUCTID+" TEXT PRIMARY KEY," +
+                    DB_ITEM.FIELD_QUANTITY+" NUMBER,"+
+                    DB_ITEM.FIELD_SUBJECT + " TEXT," +
+                    DB_ITEM.FIELD_TEXT + " TEXT," +
+                    DB_ITEM.FIELD_DATE + " TEXT)";
             db.execSQL(q);
         }
         @Override

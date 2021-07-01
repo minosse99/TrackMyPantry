@@ -19,7 +19,7 @@ import android.arch.lifecycle.ViewModelProvider;
 
 import com.example.mypantry.DBManager;
 import com.example.mypantry.R;
-import com.example.mypantry.data.ITEM;
+import com.example.mypantry.data.DB_ITEM;
 import com.example.mypantry.item.Item;
 import com.example.mypantry.ui.home.HomeFragment;
 
@@ -40,23 +40,19 @@ public class ShoppingListFragment extends Fragment {
         shoppingListViewModel =
                 new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ShoppingListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
         Button btnShare = root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v->{
+            EditText editText = Objects.requireNonNull(getActivity()).findViewById(R.id.editText);
+
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, editText.getText().toString());
             sendIntent.setType("text/plain");
 
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
         });
-        shoppingListViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+       
         if(list == null ){ list = new ArrayList<>();}
         if(db == null) { db = HomeFragment.getDBistance(); }
 
@@ -87,11 +83,11 @@ public class ShoppingListFragment extends Fragment {
             Cursor cursor = db.query();
             while (cursor.moveToNext()) {
 
-                String barcode = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_SUBJECT));
-                String id = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_PRODUCTID));
-                String name = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
-                String description = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
-                int quantity = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_QUANTITY));
+                String barcode = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_SUBJECT));
+                String id = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_PRODUCTID));
+                String name = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_TEXT));
+                String description = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_DATE));
+                int quantity = cursor.getInt(cursor.getColumnIndex(DB_ITEM.FIELD_QUANTITY));
                 list.add(new Item(id,name, description, quantity, barcode));
 
                 Log.e("LIST",text);

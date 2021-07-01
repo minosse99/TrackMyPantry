@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.example.mypantry.data.ITEM;
+import com.example.mypantry.data.DB_ITEM;
 
 import com.example.mypantry.item.Item;
 
@@ -22,13 +22,13 @@ public class DBManager{
     {
         SQLiteDatabase db=dbhelper.getWritableDatabase();
         ContentValues cv=new ContentValues();
-        cv.put(ITEM.FIELD_PRODUCTID,productid);
-        cv.put(ITEM.FIELD_SUBJECT, barcode);
-        cv.put(ITEM.FIELD_TEXT, object);
-        cv.put(ITEM.FIELD_DATE, description);
-        cv.put(ITEM.FIELD_QUANTITY,quantity);
+        cv.put(DB_ITEM.FIELD_PRODUCTID,productid);
+        cv.put(DB_ITEM.FIELD_SUBJECT, barcode);
+        cv.put(DB_ITEM.FIELD_TEXT, object);
+        cv.put(DB_ITEM.FIELD_DATE, description);
+        cv.put(DB_ITEM.FIELD_QUANTITY,quantity);
         try {
-            db.insert(ITEM.TBL_NAME, null,cv);
+            db.insert(DB_ITEM.TBL_NAME, null,cv);
         }
         catch (SQLiteException sqle) {
             Log.e("DB",sqle.getMessage());
@@ -44,7 +44,7 @@ public class DBManager{
         SQLiteDatabase db=dbhelper.getWritableDatabase();
         try
         {
-            if (db.delete(ITEM.TBL_NAME, ITEM.FIELD_PRODUCTID+"=?", new String[]{(id)})>0)
+            if (db.delete(DB_ITEM.TBL_NAME, DB_ITEM.FIELD_PRODUCTID+"=?", new String[]{(id)})>0)
                 return true;
             return false;
         }
@@ -59,7 +59,7 @@ public class DBManager{
         try
         {
             SQLiteDatabase db=dbhelper.getReadableDatabase();
-            crs=db.query(false, ITEM.TBL_NAME,null, null , null , null, null, null, null);
+            crs=db.query(false, DB_ITEM.TBL_NAME,null, null , null , null, null, null, null);
 
         }
         catch(SQLiteException sqle)

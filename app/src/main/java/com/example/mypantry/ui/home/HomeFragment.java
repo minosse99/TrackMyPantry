@@ -14,18 +14,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SearchEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.arch.lifecycle.ViewModelProvider;
-import android.widget.Toast;
 
 import com.example.mypantry.DBManager;
 import com.example.mypantry.ItemRecyclerViewAdapter;
 import com.example.mypantry.R;
-import com.example.mypantry.data.ITEM;
+import com.example.mypantry.data.DB_ITEM;
 import com.example.mypantry.item.Item;
 import com.example.mypantry.item.ListItem;
 
@@ -111,11 +109,11 @@ public class HomeFragment extends Fragment {
             Cursor cursor = db.query();
                 while (cursor.moveToNext()) {
 
-                    String barcode = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_SUBJECT));
-                    String id = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_PRODUCTID));
-                    String name = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
-                    String description = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
-                    int quantity = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_QUANTITY));
+                    String barcode = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_SUBJECT));
+                    String id = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_PRODUCTID));
+                    String name = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_TEXT));
+                    String description = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_DATE));
+                    int quantity = cursor.getInt(cursor.getColumnIndex(DB_ITEM.FIELD_QUANTITY));
                     test.add(new ListItem(id, new Item(id,name, description, quantity, barcode)));
 
                     }
