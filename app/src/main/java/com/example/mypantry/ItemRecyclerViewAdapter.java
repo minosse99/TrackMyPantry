@@ -8,12 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mypantry.item.Item;
 import com.example.mypantry.item.ListItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,9 +24,11 @@ import java.util.Objects;
  * {@link RecyclerView.Adapter} that can display a {@link Item}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> {
+public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> implements Filterable {
 
     private final List<ListItem> mValues;
+    private List<ListItem> fullList;
+
     private DBManager db;
     private final Fragment fragment;
 
@@ -31,6 +36,7 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
         mValues = items;
         this.db= db;
         this.fragment = fragment;
+        fullList = new ArrayList<>(items);
     }
 
     @Override
@@ -51,6 +57,37 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    private Filter exampleFilter = new Filter(){
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<ListItem> filteredList = new ArrayList<>();
+            if(constraint == null && constraint.length() == 0){
+                filteredList.addAll(fullList);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for ( ListItem exampleItem : fullList){
+                    if(exampleItem.getItem().getName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(exampleItem);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mValues.clear();
+            mValues.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+    public Filter getFilter(){
+        return exampleFilter;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
