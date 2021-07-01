@@ -62,7 +62,6 @@ public class ActivitySearch extends AppCompatActivity{
         //initialiseDetectorsAndSources();
          loadingProgressBar = findViewById(R.id.loadingSearch);
 
-        //loadingProgressBar.setVisibility(View.VISIBLE);
         Button btn = findViewById(R.id.searchButton);
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
