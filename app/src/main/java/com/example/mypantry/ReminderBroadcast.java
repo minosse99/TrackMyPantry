@@ -23,7 +23,7 @@ public class ReminderBroadcast extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"TRACKPANTRY")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("Aggiorna la tua Dispensa!")
-                .setContentText("É da un po che non aggiorni la tua dispensa, pensaci subito")
+                .setContentText("É un po che non aggiorni la tua dispensa ")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
