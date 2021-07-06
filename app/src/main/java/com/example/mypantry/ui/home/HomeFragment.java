@@ -117,10 +117,12 @@ public class HomeFragment extends Fragment {
 
     }
 
+    
     public void checkDB() {
         try {
             test.clear();
             Cursor cursor = db.query();
+            
             while (cursor.moveToNext()) {
 
                 String barcode = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_SUBJECT));

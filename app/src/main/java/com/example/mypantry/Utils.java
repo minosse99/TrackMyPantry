@@ -20,8 +20,8 @@ import okhttp3.Request;
 import okio.Buffer;
 
 public class Utils {
-    public static String bodyToString(final Request request){
 
+    public static String bodyToString(final Request request){
         try {
             final Request copy = request.newBuilder().build();
             final Buffer buffer = new Buffer();
@@ -34,7 +34,6 @@ public class Utils {
 
     public static String[] getCharSequence(JSONArray list) throws JSONException {
 
-        Log.d("prova","prova");
         String[] appo = new String[20];
         int count = 0;
         for(int i = 0 ; i< list.length();i++){
@@ -58,8 +57,5 @@ public class Utils {
             JSONObject json = Utils.getJSONObject(obj);
             return json.getString(name);
     }
-
-
-
 
 }

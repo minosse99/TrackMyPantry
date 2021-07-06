@@ -11,10 +11,13 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +34,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.mypantry.ReminderBroadcast;
 import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.R;
+import com.example.mypantry.ui.home.HomeFragment;
 import com.example.mypantry.ui.login.DialogLogout;
 import com.example.mypantry.ui.login.LoginActivity;
 
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private DialogLogout dialout;
 
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e("Current Time", String.valueOf(System.currentTimeMillis()));
         super.onCreate(savedInstanceState);
         dialout = new DialogLogout(this);
         setContentView(R.layout.activity_main);
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_shoppinglist, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_shoppinglist)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -67,33 +72,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            HomeFragment homeFragment = new HomeFragment();
+            transaction.replace(R.id.nav_view, homeFragment);
+            transaction.addToBackStack("FragmentHome");
+            transaction.commit();
+        }
+        super.onBackPressed();
+    }
 
     @Override
     protected void onStart() {
         AuthToken.importToken(this);
         checkAuthUI();
-
-        Intent intent = new Intent(MainActivity.this, ReminderBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,intent,0);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        long time = System.currentTimeMillis();
-        long tenSecondsinMills = 1000 * 10;
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP,time + tenSecondsinMills , pendingIntent);
-
         super.onStart();
     }
 
     @Override
     protected void onStop() {
+        Toast.makeText(this,"onStop()",Toast.LENGTH_SHORT).show();
         AuthToken.saveToken(this);
-        super.onStop();
-    }
+        Intent intent = new Intent(MainActivity.this, ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,intent,0);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long time = System.currentTimeMillis();
+        long minute = 1000 * 60;  //to set an alarmManager over 1 minute
+        alarmManager.set(AlarmManager.RTC_WAKEUP,time + (minute * 120), pendingIntent);
+
+        super.onStop();
     }
 
     public void loginAction(View view) {

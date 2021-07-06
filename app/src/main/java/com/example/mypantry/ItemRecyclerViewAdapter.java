@@ -1,6 +1,9 @@
 package com.example.mypantry;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,6 +15,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mypantry.item.Item;
 import com.example.mypantry.item.ListItem;
@@ -28,7 +32,6 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
 
     private final List<ListItem> mValues;
     private List<ListItem> fullList;
-
     private DBManager db;
     private final Fragment fragment;
 
@@ -41,7 +44,6 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_item, parent, false);
         return new ViewHolder(view);
@@ -129,14 +131,27 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
 
             mDescriptionView.setOnLongClickListener(v->{
                AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getActivity());
-
-               builder.setTitle(mDescriptionView.getText()).setMessage("\nID Prodotto: "+mItem.getItem().getProductID()+"\nDescription: "+mItem.getItem().getDetails() +"\nBarcode: "+mItem.getItem().getBarcode()+"\nQuantity: "+mItem.getItem().getQuantity());
+               String content = "\nID Prodotto: "+mItem.getItem().getProductID()+"\nDescription: "+mItem.getItem().getDetails() +"\nBarcode: "+mItem.getItem().getBarcode()+"\nQuantity: "+mItem.getItem().getQuantity();
+               builder.setTitle(mDescriptionView.getText())
+                       .setMessage(content);
 // Add the buttons
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
                     }
                 });
+
+                builder.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ClipboardManager clipboard = (ClipboardManager) Objects.requireNonNull(fragment.getContext()).getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("Pantry", content);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText( fragment.getContext() , "Copiato negli Appunti",Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setIcon(R.mipmap.ic_launcher);
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
