@@ -1,15 +1,5 @@
 package com.example.mypantry;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.util.Log;
-
-import com.example.mypantry.ui.login.LoginActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".data.ui.fragment.HomeFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
@@ -24,12 +24,13 @@
         tools:listitem="@layout/fragment_item" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/titleImg"
         android:layout_width="316dp"
         android:layout_height="77dp"
         android:src="@drawable/trackmypantry"
         app:layout_constraintBottom_toTopOf="@+id/list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

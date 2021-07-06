@@ -1,4 +1,4 @@
-package com.example.mypantry.ui.login;
+package com.example.mypantry.data.ui.login;
 
 import android.support.annotation.Nullable;
 

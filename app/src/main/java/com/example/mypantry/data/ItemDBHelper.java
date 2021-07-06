@@ -1,4 +1,4 @@
-package com.example.mypantry;
+package com.example.mypantry.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

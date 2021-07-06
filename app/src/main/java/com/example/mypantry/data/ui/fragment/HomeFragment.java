@@ -1,16 +1,11 @@
-package com.example.mypantry.ui.home;
+package com.example.mypantry.data.ui.fragment;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -23,13 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.arch.lifecycle.ViewModelProvider;
+import android.widget.Button;
 
-import com.example.mypantry.DBManager;
+import com.example.mypantry.data.DBManager;
 import com.example.mypantry.ItemRecyclerViewAdapter;
 import com.example.mypantry.R;
-import com.example.mypantry.ReminderBroadcast;
-import com.example.mypantry.activity.MainActivity;
 import com.example.mypantry.data.DB_ITEM;
 import com.example.mypantry.item.Item;
 import com.example.mypantry.item.ListItem;
@@ -40,8 +33,6 @@ import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
-    private FragmentTransaction fragmentTransaction;
-    private HomeViewModel homeViewModel;
     public static DBManager db = null;
     private List<ListItem> test = null;
     private RecyclerView recyclerView = null;
@@ -58,8 +49,6 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         this.view = root;
         if (test == null) {
@@ -73,6 +62,7 @@ public class HomeFragment extends Fragment {
         }
 
         checkDB();
+
         //      db.save("Wurstel ","3083948275025","Wurstel di Suino ",1,"7234598970");
         //      db.save("Fragola","304323943025","Fragole ",1,"111123831220");
         return root;
@@ -114,10 +104,9 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         checkDB();
-
     }
 
-    
+
     public void checkDB() {
         try {
             test.clear();
@@ -141,7 +130,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
     }
-
 
     public static DBManager getDBistance() {
         return db;

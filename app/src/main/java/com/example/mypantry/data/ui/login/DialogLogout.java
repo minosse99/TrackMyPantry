@@ -1,10 +1,7 @@
-package com.example.mypantry.ui.login;
+package com.example.mypantry.data.ui.login;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-
-import com.example.mypantry.connection.AuthToken;
 
 public class DialogLogout {
     private final AlertDialog.Builder builder;

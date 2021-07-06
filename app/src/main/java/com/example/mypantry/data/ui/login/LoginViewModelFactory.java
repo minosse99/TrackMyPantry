@@ -1,4 +1,4 @@
-package com.example.mypantry.ui.login;
+package com.example.mypantry.data.ui.login;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;

@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -34,9 +33,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.mypantry.ReminderBroadcast;
 import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.R;
-import com.example.mypantry.ui.home.HomeFragment;
-import com.example.mypantry.ui.login.DialogLogout;
-import com.example.mypantry.ui.login.LoginActivity;
+import com.example.mypantry.data.ui.fragment.HomeFragment;
+import com.example.mypantry.data.ui.login.DialogLogout;
+import com.example.mypantry.data.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 

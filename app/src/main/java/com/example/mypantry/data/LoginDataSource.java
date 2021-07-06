@@ -27,14 +27,11 @@ public class LoginDataSource{
         if(username != null) {
             Registration register = new Registration();
             String id = String.valueOf(register.execute(username, email, password));
-            //id instanceof AsyncTask<String, Void, LoggedInUser> ? ((AsyncTask<String, Void, LoggedInUser>) id) : null;
-            // user = new LoggedInUser(java.util.UUID.randomUUID().toString(),
-            //        email);
             user = new LoggedInUser(id,AuthToken.getUsername());
         }else {
             user = AuthRequest.login(email, password);
         }
-        Thread.sleep(700);                  //wait async call on Auth.login
+        Thread.sleep(800);                  //wait async call on Auth.login
         if(AuthToken.isNull())
             return new Result.Error(new LoginException("No account found"));
         else
@@ -46,7 +43,7 @@ public class LoginDataSource{
 
 
     public void logout() {
-        // TODO: revoke authentication
+        AuthToken.deleteToken();
     }
 
 }

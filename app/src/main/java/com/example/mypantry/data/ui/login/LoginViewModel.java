@@ -1,11 +1,8 @@
-package com.example.mypantry.ui.login;
+package com.example.mypantry.data.ui.login;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.util.Patterns;
 
 import com.example.mypantry.data.LoginRepository;

@@ -1,30 +1,21 @@
 package com.example.mypantry.connection;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.mypantry.activity.ActivitySearch;
-import com.example.mypantry.ui.login.LoginActivity;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.BufferedSink;
 
 public class ProductRequest{
     private static final OkHttpClient client = new OkHttpClient();

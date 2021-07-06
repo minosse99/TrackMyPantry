@@ -1,4 +1,4 @@
-package com.example.mypantry;
+package com.example.mypantry.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -6,14 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.example.mypantry.data.DB_ITEM;
-
 import com.example.mypantry.item.Item;
 
 public class DBManager{
 
     private ItemDBHelper dbhelper;
-
     public DBManager(Context context){
         dbhelper=new ItemDBHelper(context);
     }

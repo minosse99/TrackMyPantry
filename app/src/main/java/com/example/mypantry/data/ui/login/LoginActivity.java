@@ -1,4 +1,4 @@
-package com.example.mypantry.ui.login;
+package com.example.mypantry.data.ui.login;
 
 import android.app.Activity;
 import android.arch.lifecycle.Observer;

@@ -1,6 +1,4 @@
-package com.example.mypantry.ui.login;
-
-import com.example.mypantry.data.model.LoggedInUser;
+package com.example.mypantry.data.ui.login;
 
 /**
  * Class exposing authenticated user details to the UI.

@@ -1,4 +1,4 @@
-package com.example.mypantry.ui.shoppingList;
+package com.example.mypantry.data.ui.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,18 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 
-import com.example.mypantry.DBManager;
+import com.example.mypantry.data.DBManager;
 import com.example.mypantry.R;
 import com.example.mypantry.data.DB_ITEM;
 import com.example.mypantry.item.Item;
-import com.example.mypantry.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +26,11 @@ public class ShoppingListFragment extends Fragment {
 
     private DBManager db;
     private List<Item> list;
-    private ShoppingListViewModel shoppingListViewModel;
     private String text;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         if(text == null){text = "";}
-        shoppingListViewModel =
-                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(ShoppingListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_shoppinglist, container, false);
         Button btnShare = root.findViewById(R.id.btnShare);
         btnShare.setOnClickListener(v->{

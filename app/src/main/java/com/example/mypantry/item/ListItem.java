@@ -2,7 +2,7 @@ package com.example.mypantry.item;
 
 import com.example.mypantry.item.Item;
 
-public class ListItem {
+public class ListItem implements Comparable{
     private String key;
     private Item item;
 
@@ -27,5 +27,12 @@ public class ListItem {
         this.item = item;
     }
 
+    public int compareTo(ListItem o) {
+        return item.getName().compareTo(o.getItem().getName());
+    }
 
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
 }
