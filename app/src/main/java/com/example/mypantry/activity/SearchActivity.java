@@ -61,8 +61,7 @@ public class SearchActivity extends AppCompatActivity{
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
         surfaceView = findViewById(R.id.surface_view);
         barcodeText = findViewById(R.id.barcode);
-        //initialiseDetectorsAndSources();
-         loadingProgressBar = findViewById(R.id.loadingSearch);
+        loadingProgressBar = findViewById(R.id.loadingSearch);
 
         Button btn = findViewById(R.id.searchButton);
         btn.setOnClickListener(new View.OnClickListener(){
@@ -170,11 +169,10 @@ public class SearchActivity extends AppCompatActivity{
         getSupportActionBar().hide();
         initialiseDetectorsAndSources();
     }
-
+//Dialog -> Scelta----------------------------------------------------------------------------------
     public Dialog onCreateDialog(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
-
         final View customLayout = getLayoutInflater().inflate(R.layout.add_product_dialog, null);
         builder.setView(customLayout);
         // Inflate and set the layout for the dialog
@@ -195,7 +193,7 @@ public class SearchActivity extends AppCompatActivity{
                         onStart();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         loadingProgressBar.setVisibility(View.INVISIBLE);
                     }
@@ -203,8 +201,9 @@ public class SearchActivity extends AppCompatActivity{
         return builder.create();
     }
 
-    public Dialog onCreateChooseDialog(View v) throws JSONException {
+//Dialog -> Nuovo Prodotto -------------------------------------------------------------------------
 
+    public Dialog onCreateChooseDialog(View v) throws JSONException {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Seleziona un elemento")
                     .setItems(Utils.getCharSequence(listProduct), new DialogInterface.OnClickListener() {
@@ -221,11 +220,11 @@ public class SearchActivity extends AppCompatActivity{
                                 homeIntent();
                             } catch (JSONException e) {e.printStackTrace(); }
                         }
-                    }).setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             loadingProgressBar.setVisibility(View.INVISIBLE);}
-                    }).setPositiveButton(R.string.aggiungi, new DialogInterface.OnClickListener() {
+                    }).setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             onCreateDialog(v).show();
