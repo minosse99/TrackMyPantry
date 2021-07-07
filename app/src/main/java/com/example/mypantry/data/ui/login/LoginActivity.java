@@ -144,14 +144,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void changeRegisterLogIn(View view) {
-
+        Button btn = findViewById(R.id.buttonLogin);
         EditText btnUsernameVisible = findViewById(R.id.username);
       if(changeText.getText() == getText(R.string.already_register_log_in)){
             login= true;
+            btn.setText("Login");
             changeText.setText(getText(R.string.sign_in));
             btnUsernameVisible.setVisibility(View.INVISIBLE);
         }else{
             login = false;
+            btn.setText("Sign in");
             changeText.setText(getText(R.string.already_register_log_in));
             btnUsernameVisible.setVisibility(View.VISIBLE);
         }

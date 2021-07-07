@@ -25,33 +25,6 @@ public class AuthRequest {
     private static final OkHttpClient client = new OkHttpClient();
     private static String tokenSession = null;
 
-/*
-    public static void register(String username,String email, String password){
-        final int[] result = {0};
-        RequestBody formBody = new FormBody.Builder()
-                .add("username",username)
-                .add("email",email)
-                .add("password",password)
-                .build();
-
-        Request request = new Request.Builder()
-                .url(url+"users")
-                .post(formBody)
-                .build();
-    client.newCall(request).enqueue(new Callback() {
-        @Override
-        public void onFailure(Call call, IOException e) {
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onResponse(Call call, Response response) throws IOException {
-            Log.d("Register",response.body().string());
-        }
-        });
-    }
-*/
-
     public static LoggedInUser login(String email, String password){
 
        RequestBody formBody = new FormBody.Builder()
@@ -59,13 +32,10 @@ public class AuthRequest {
                 .add("password",password)
                 .build();
 
-        Log.i("body",formBody.toString());
         Request request = new Request.Builder()
                 .url(url+"auth/login")
                 .post(formBody)
                 .build();
-
-        Log.e("RequestBody", Utils.bodyToString(request));
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure( Call call, IOException e) { e.printStackTrace();}

@@ -22,22 +22,22 @@ public class LoginDataSource{
         this.username = username;
         this.password = password;
         this.email = email;
-    LoggedInUser user = null;
+        LoggedInUser user = null;
         try {
-        if(username != null) {
-            Registration register = new Registration();
-            String id = String.valueOf(register.execute(username, email, password));
-            user = new LoggedInUser(id,AuthToken.getUsername());
-        }else {
-            user = AuthRequest.login(email, password);
-        }
-        Thread.sleep(800);                  //wait async call on Auth.login
-        if(AuthToken.isNull())
-            return new Result.Error(new LoginException("No account found"));
-        else
-            return new Result.Success<>(user);
-    } catch (Exception e) {
-        return new Result.Error(new IOException("Error logging in", e));
+            if(username != null) {
+                Registration register = new Registration();
+                String id = String.valueOf(register.execute(username, email, password));
+                user = new LoggedInUser(id,AuthToken.getUsername());
+            }else {
+                user = AuthRequest.login(email, password);
+            }
+            Thread.sleep(800);                  //wait async call on Auth.login
+            if(AuthToken.isNull())
+                return new Result.Error(new LoginException("No account found"));
+            else
+                return new Result.Success<>(user);
+        } catch (Exception e) {
+            return new Result.Error(new IOException("Error logging in", e));
     }
 }
 

@@ -28,7 +28,7 @@ public class Utils {
         int count = 0;
         for(int i = 0 ; i< list.length();i++){
             JSONObject obj = getJSONObject(list.get(i));
-            if(!obj.getBoolean("test") && count < 20) {
+            if( count < 20) {
                 appo[count] = obj.getString("name");
                 count++;
             }
@@ -47,5 +47,6 @@ public class Utils {
             JSONObject json = Utils.getJSONObject(obj);
             return json.getString(name);
     }
+
 
 }

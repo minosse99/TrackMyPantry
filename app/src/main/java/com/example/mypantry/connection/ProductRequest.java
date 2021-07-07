@@ -2,7 +2,7 @@ package com.example.mypantry.connection;
 
 import android.util.Log;
 
-import com.example.mypantry.activity.ActivitySearch;
+import com.example.mypantry.activity.SearchActivity;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -44,10 +44,18 @@ public class ProductRequest{
                     object = (JSONObject) new JSONObject(res);
                     String token = object.getString("token");
                     JSONArray product = (JSONArray) object.get("products");
-                    ActivitySearch.listProduct = product;
+                    JSONArray productComplete = new JSONArray();
+
+                    for(int i = 0; i< product.length();i++){    //filter elements with Test = true
+                        JSONObject obj = product.getJSONObject(i);
+                        if(!obj.getBoolean("test")){
+                            productComplete.put(obj);
+                        }
+                    }
+                    SearchActivity.listProduct = productComplete;
                     tokenSession = token;
-                    Log.e("token", token);
-                    Log.e("Array", product.toString());
+                    // Log.e("ArrayC",productComplete.toString());
+                   // Log.e("Array", product.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

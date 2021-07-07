@@ -62,9 +62,6 @@ public class HomeFragment extends Fragment {
         }
 
         checkDB();
-
-        //      db.save("Wurstel ","3083948275025","Wurstel di Suino ",1,"7234598970");
-        //      db.save("Fragola","304323943025","Fragole ",1,"111123831220");
         return root;
     }
 

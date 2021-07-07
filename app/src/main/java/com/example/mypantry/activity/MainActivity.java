@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     public void addNewItem(View view){
         Intent intent = new Intent();
         ComponentName component =
-                new ComponentName(this, ActivitySearch.class);
+                new ComponentName(this, SearchActivity.class);
         intent.setComponent(component);
         startActivity(intent);
     }

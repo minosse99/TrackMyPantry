@@ -31,7 +31,7 @@ import java.util.Objects;
  * {@link RecyclerView.Adapter} that can display a {@link Item}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> implements Filterable {
+public class  ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerViewAdapter.ViewHolder> implements Filterable {
 
     private final List<ListItem> mValues;
     private List<ListItem> fullList;
@@ -64,7 +64,7 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
         return mValues.size();
     }
 
-    private Filter exampleFilter = new Filter(){
+    private Filter productFilter = new Filter(){
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -92,7 +92,7 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
         }
     };
     public Filter getFilter(){
-        return exampleFilter;
+        return productFilter;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -137,7 +137,6 @@ public class    ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecycle
                String content = "\nID Prodotto: "+mItem.getItem().getProductID()+"\nDescription: "+mItem.getItem().getDetails() +"\nBarcode: "+mItem.getItem().getBarcode()+"\nQuantity: "+mItem.getItem().getQuantity();
                builder.setTitle(mDescriptionView.getText())
                        .setMessage(content);
-// Add the buttons
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
