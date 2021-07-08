@@ -10,20 +10,16 @@
     <string name="invalid_email">Not a valid Email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_prova">prova</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="scan">Scan</string>
     <string name="search">Search</string>
     <string name="insert_barcode">Insert Barcode Here</string>
     <string name="track_my_pantry">Track My Pantry</string>
-    <string name="channel_name">CHANNEL_ID</string>
     <string name="channel_description">Track My Pantry Stop</string>
     <string name="already_register_log_in">Already Register? Log In</string>
     <string name="sign_in">Sign in</string>
@@ -40,8 +36,6 @@
     <string name="annulla">Annulla</string>
     <string name="aggiungi">Aggiungi</string>
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="save_file_token">ACCESS_TOKEN</string>
     <string name="key_token">AUTH_TOKEN</string>
     <string name="key_username">AUTH_USERNAME</string>

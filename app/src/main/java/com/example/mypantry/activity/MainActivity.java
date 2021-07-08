@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addNewItem(view);
-            }
+            }                                                                                       //Intent for ActivitySearch
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        Toast.makeText(this,"onStop()",Toast.LENGTH_SHORT).show();
         AuthToken.saveToken(this);
         Intent intent = new Intent(MainActivity.this, ReminderBroadcast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,intent,0);
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         long time = System.currentTimeMillis();
         long minute = 1000 * 60;  //to set an alarmManager over 1 minute
-        alarmManager.set(AlarmManager.RTC_WAKEUP,time + (minute * 120), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,time + (minute * 120), pendingIntent);//Notification Reminder
 
         super.onStop();
     }
