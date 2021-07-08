@@ -109,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
     public void loginAction(View view) {
         if(!AuthToken.isNull()){
                 AlertDialog.Builder b = dialout.get();
-                b.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                b.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     AuthToken.deleteToken();
                     checkAuthUI();
                 }});
-                b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {;}
                 }).create().show();

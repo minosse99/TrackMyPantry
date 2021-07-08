@@ -3,12 +3,16 @@ package com.example.mypantry.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mypantry.R;
 import com.example.mypantry.Utils;
@@ -41,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity{
 
@@ -76,7 +82,9 @@ public class SearchActivity extends AppCompatActivity{
                     ProductRequest.requestList(barcode);
                     waitListProduct();
                     try {
-                        onCreateChooseDialog(v).show();
+                        if(!Utils.isConnect(getApplicationContext())){homeIntent();}
+                        else
+                            onCreateChooseDialog(v).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }}}
@@ -236,13 +244,19 @@ public class SearchActivity extends AppCompatActivity{
         }
 
         private void waitListProduct(){
-            while(listProduct==null){
+        while(listProduct==null &&  Utils.isConnect(this) ){
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }}
+            if(!Utils.isConnect(this)){
+                Toast.makeText(this," Network Error: Impossible Complete the Request ",Toast.LENGTH_LONG).show();
+                listProduct = new JSONArray();
+            }
         }
+
+
 
         private void loginIntent(){
             Intent intent = new Intent();
