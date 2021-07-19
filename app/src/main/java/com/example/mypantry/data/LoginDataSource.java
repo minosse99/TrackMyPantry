@@ -1,18 +1,19 @@
 package com.example.mypantry.data;
 
-import android.os.AsyncTask;
+import android.util.Log;
 
-import com.example.mypantry.connection.AuthToken;
-import com.example.mypantry.connection.Registration;
 import com.example.mypantry.data.model.LoggedInUser;
-import com.example.mypantry.connection.AuthRequest;
+import com.example.mypantry.connection.*;
 
 import java.io.IOException;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 public class LoginDataSource{
+
     private String username;
     private String email;
     private String password;
@@ -26,24 +27,23 @@ public class LoginDataSource{
             if(username != null) {
                 Registration register = new Registration();
                 String id = String.valueOf(register.execute(username, email, password));
-                //id instanceof AsyncTask<String, Void, LoggedInUser> ? ((AsyncTask<String, Void, LoggedInUser>) id) : null;
-                // user = new LoggedInUser(java.util.UUID.randomUUID().toString(),
-                //        email);
                 user = new LoggedInUser(id,AuthToken.getUsername());
             }else {
                 user = AuthRequest.login(email, password);
             }
-            // TODO: handle loggedInUser authentication
-            return new Result.Success<>(user);
+            Thread.sleep(800);                  //wait async call on Auth.login
+            if(AuthToken.isNull())
+                return new Result.Error(new LoginException("No account found"));
+            else
+                return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
-        }
     }
+}
 
 
     public void logout() {
-        // TODO: revoke authentication
+        AuthToken.deleteToken();
     }
-
 
 }

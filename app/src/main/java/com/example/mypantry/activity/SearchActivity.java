@@ -3,16 +3,12 @@ package com.example.mypantry.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Service;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +29,7 @@ import com.example.mypantry.connection.AuthToken;
 import com.example.mypantry.connection.LoadProduct;
 import com.example.mypantry.connection.ProductRequest;
 import com.example.mypantry.connection.VoteProduct;
-import com.example.mypantry.data.ui.fragment.HomeFragment;
 import com.example.mypantry.data.ui.login.LoginActivity;
-import com.example.mypantry.item.ListItem;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -43,10 +37,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity{
 
@@ -193,7 +185,6 @@ public class SearchActivity extends AppCompatActivity{
                         EditText name = customLayout.findViewById(R.id.nameProduct);
                         EditText description = customLayout.findViewById(R.id.descriptionProduct);
 
-                        Log.e("name", name.getText().toString());
                         try {
                             LoadProduct.addProduct(name.getText().toString(), description.getText().toString(), getBarcode());
                             homeIntent();
@@ -224,7 +215,7 @@ public class SearchActivity extends AppCompatActivity{
                                 String barcode = Utils.getData(obj, "barcode");
                                 String id = Utils.getData(obj,"id");
                                 VoteProduct.voteProduct(id);
-                                HomeFragment.db.save( name,barcode, description,1,id);
+                                Utils.getDBIstance().save( name,barcode, description,1,id);
                                 homeIntent();
                             } catch (JSONException e) {e.printStackTrace(); }
                         }

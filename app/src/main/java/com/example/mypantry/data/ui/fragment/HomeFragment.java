@@ -18,14 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.widget.Button;
 
 import com.example.mypantry.data.DBManager;
 import com.example.mypantry.ItemRecyclerViewAdapter;
 import com.example.mypantry.R;
 import com.example.mypantry.data.DB_ITEM;
 import com.example.mypantry.item.Item;
-import com.example.mypantry.item.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,7 @@ import java.util.Objects;
 public class HomeFragment extends Fragment {
 
     public static DBManager db = null;
-    private List<ListItem> test = null;
+    private static List<Item> test = null;
     private RecyclerView recyclerView = null;
     private View view;
     private SearchView searchView = null;
@@ -103,20 +101,23 @@ public class HomeFragment extends Fragment {
         checkDB();
     }
 
+    @Override
+    public void onPause() {
+        checkDB();
+        super.onPause();
+    }
 
     public void checkDB() {
         try {
             test.clear();
             Cursor cursor = db.query();
-            
             while (cursor.moveToNext()) {
-
                 String barcode = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_SUBJECT));
                 String id = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_PRODUCTID));
                 String name = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_TEXT));
                 String description = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_DATE));
                 int quantity = cursor.getInt(cursor.getColumnIndex(DB_ITEM.FIELD_QUANTITY));
-                test.add(new ListItem(id, new Item(id, name, description, quantity, barcode)));
+                test.add(new Item(id, name, description, quantity, barcode));
 
             }
         } catch (CursorIndexOutOfBoundsException e) {
@@ -128,7 +129,15 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public static DBManager getDBistance() {
+    public void updateDB(){
+        for(Item elem : test ){
+            db.delete(elem.getProductID());
+            db.save(elem);
+        }
+    }
+    public static DBManager getDB() {
         return db;
     }
+
+    public static List<Item> getLst(){return test;}
 }

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.example.mypantry.Utils;
 import com.example.mypantry.data.DBManager;
 import com.example.mypantry.R;
 import com.example.mypantry.data.DB_ITEM;
@@ -45,8 +46,8 @@ public class ShoppingListFragment extends Fragment {
             startActivity(shareIntent);
         });
        
-        if(list == null ){ list = new ArrayList<>();}
-        if(db == null) { db = HomeFragment.getDBistance(); }
+        if(list == null ){ list = Utils.getList();}
+        if(db == null) { db = Utils.getDBIstance(); }
 
         return root;
     }
@@ -54,7 +55,6 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        compileBody();
         updateText();
     }
 
@@ -63,30 +63,10 @@ public class ShoppingListFragment extends Fragment {
         edittext.setText(" ");
         for (Item element:list
              ) {
-            edittext.append("\n"+element.getQuantity()+"- "+element.getName()+" : "+element.getDetails()+" "+"\n");
+            if(element.getQuantity() < 1)
+                edittext.append(element.getName()+" : "+element.getDetails()+" "+"\n");
         }
     }
 
 
-    public void compileBody(){
-        try {
-
-            list.clear();
-            Cursor cursor = db.query();
-            while (cursor.moveToNext()) {
-
-                String barcode = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_SUBJECT));
-                String id = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_PRODUCTID));
-                String name = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_TEXT));
-                String description = cursor.getString(cursor.getColumnIndex(DB_ITEM.FIELD_DATE));
-                int quantity = cursor.getInt(cursor.getColumnIndex(DB_ITEM.FIELD_QUANTITY));
-                list.add(new Item(id,name, description, quantity, barcode));
-
-                Log.e("LIST",text);
-            }
-        }catch (CursorIndexOutOfBoundsException e){
-            Log.e("Error : checkDB", String.valueOf(e));
-        }
-
-    }
 }

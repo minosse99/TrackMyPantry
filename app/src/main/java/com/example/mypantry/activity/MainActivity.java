@@ -1,114 +1,106 @@
 package com.example.mypantry.activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.mypantry.connection.AuthToken;
-import com.example.mypantry.DBManager;
-import com.example.mypantry.data.ITEM;
-import com.example.mypantry.ItemRecyclerViewAdapter;
-import com.example.mypantry.R;
-import com.example.mypantry.dummy.DummyItem;
-import com.example.mypantry.ui.login.DialogLogout;
-import com.example.mypantry.ui.login.ListItem;
-import com.example.mypantry.ui.login.LoginActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.mypantry.ReminderBroadcast;
+import com.example.mypantry.connection.AuthToken;
+import com.example.mypantry.R;
+import com.example.mypantry.data.ui.fragment.HomeFragment;
+import com.example.mypantry.data.ui.login.DialogLogout;
+import com.example.mypantry.data.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private Notification not;
-    private static DBManager db = null;
-    private List<ListItem> test = null;
-    private RecyclerView recyclerView = null;
-    private DialogLogout dialout = null;
+    private AppBarConfiguration mAppBarConfiguration;
+    private DialogLogout dialout;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        AuthToken.importToken(this);
         dialout = new DialogLogout(this);
-        if(test == null && recyclerView == null) {
-            test = new ArrayList<>();
-            recyclerView = findViewById(R.id.list);
-            db = new DBManager(this);
-        }
-/*
-       db.save("Caffe", "122211211211", "Oggi");
-        db.save("The", "98239374934", "25/05/20");
-        db.save("Pasta", "1222112134989895", "Oggi");
-        db.save("Computer", "1222543511211", "Oggi");
-        db.save("Stampante", "12434511211", "Oggi");
-        db.save("Cartuccia per stampanti", "132432211211", "Oggi");
-        db.save("Acqua", "1222113293041", "Oggi");
-*/
-        //Action Click listener on btnShare
-        Button btnShare = findViewById(R.id.btnShare);
-        btnShare.setOnClickListener(v->{
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-            sendIntent.setType("text/plain");
-
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewItem(view);
+            }                                                                                       //Intent for ActivitySearch
         });
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_shoppinglist)
+                .setDrawerLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+        createNotificationChannel();
+
     }
 
-
     @Override
-    public void onStart() {
+    protected void onStart() {
+        AuthToken.importToken(this);
+        checkAuthUI();
         super.onStart();
-        checkDB();
-        Button btnLogin = findViewById(R.id.Login);
-
-        if(!AuthToken.isNull()){
-           btnLogin.setText(AuthToken.getUsername());
-        }else{
-            btnLogin.setText(R.string.login);
-        }
-        Log.d("AuthToken",AuthToken.getUsername());
-        Log.d("AuthToken",AuthToken.getToken());
     }
 
     @Override
     protected void onStop() {
         AuthToken.saveToken(this);
+        Intent intent = new Intent(MainActivity.this, ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,0,intent,0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long time = System.currentTimeMillis();
+        long minute = 1000 * 60;  //to set an alarmManager over 1 minute
+        alarmManager.set(AlarmManager.RTC_WAKEUP,time + (minute), pendingIntent);//Notification Reminder
+
         super.onStop();
     }
-
 
     public void loginAction(View view) {
         if(!AuthToken.isNull()){
                 AlertDialog.Builder b = dialout.get();
-                b.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                b.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Button btnLogin = findViewById(R.id.Login);
-                    btnLogin.setText("LOGIN");
                     AuthToken.deleteToken();
+                    checkAuthUI();
                 }});
-                b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {;}
                 }).create().show();
@@ -122,52 +114,58 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void newItemAction(View view){
-
+    public void addNewItem(View view){
         Intent intent = new Intent();
         ComponentName component =
-                new ComponentName(this, ActivitySearch.class);
+                new ComponentName(this, SearchActivity.class);
         intent.setComponent(component);
         startActivity(intent);
-
     }
 
-    private void createNotificationChannel() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    private void checkAuthUI(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView navImage = (ImageView) headerView.findViewById(R.id.imageView);
+        Button btnLogin = (Button) headerView.findViewById(R.id.buttonLogin);
+        TextView usernameTxt = (TextView) headerView.findViewById(R.id.userTextView);
+        if(AuthToken.isNull()) {  //user is not authenticated
+            navImage.setVisibility(View.INVISIBLE);
+            usernameTxt.setVisibility(View.INVISIBLE);
+            usernameTxt.setText(" ");
+            btnLogin.setText("Login");
+        }else {                     //user authenticated
+            usernameTxt.setVisibility(View.VISIBLE);
+            usernameTxt.setText(AuthToken.getUsername());
+            navImage.setVisibility(View.VISIBLE);
+            btnLogin.setText("Log Out");
+        }
+    }
+
+    public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
+            CharSequence name = "ReminderNotification";
+            String description = "Set reminder for empty pantry";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel =
-                    new NotificationChannel("CHANNEL_ID", name, importance);
+                    new NotificationChannel("TRACKPANTRY", name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager =
                     getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-    public void checkDB(){
-        try {
-            test.clear();
-            Cursor cursor = db.query();
-            while(cursor.moveToNext()){
-                String subject = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_SUBJECT));
-                int id = cursor.getInt(cursor.getColumnIndex(ITEM.FIELD_ID));
-                String text = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_TEXT));
-//        String date = cursor.getString(cursor.getColumnIndex(ITEM.FIELD_DATE));
-                test.add(new ListItem(id, new DummyItem(text,subject)));
-            }
-        }catch (CursorIndexOutOfBoundsException e){
-            Log.e("Error : checkDB", String.valueOf(e));
-        }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(test, db, this);
-        recyclerView.setAdapter(adapter);
-    }
-
-    public static void saveElement(String code ,String name , String description){
-        db.save(code,name,description);
-    }
-
-
 }

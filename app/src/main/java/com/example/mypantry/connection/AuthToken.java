@@ -27,9 +27,6 @@ public class AuthToken {
     public static Boolean assign(String tokn, String user){
         token = tokn;
         username = user;
-
-        Log.e("user",username);
-        Log.e("tkn",token);
         return !isNull();
     }
 

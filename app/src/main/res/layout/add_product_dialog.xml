@@ -6,7 +6,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="196dp"
+        android:layout_height="163dp"
         android:background="#FFFFBB33"
         android:contentDescription="@string/app_name"
         android:scaleType="center"
@@ -16,8 +16,8 @@
         android:id="@+id/explainText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="@string/addProduct" />
+        android:text="Aggiungi i dettagli del tuo prodotto"
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/nameProduct"
@@ -29,11 +29,11 @@
 
     <EditText
         android:id="@+id/descriptionProduct"
-        android:layout_width="401dp"
-        android:layout_height="127dp"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
         android:ems="10"
-        android:hint="Describes your product"
         android:gravity="start|top"
+        android:hint="Describes your product"
         android:inputType="" />
 
 </LinearLayout>

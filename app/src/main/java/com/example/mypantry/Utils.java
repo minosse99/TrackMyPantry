@@ -4,11 +4,16 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.mypantry.data.DBManager;
+import com.example.mypantry.data.ui.fragment.HomeFragment;
+import com.example.mypantry.item.Item;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Request;
 import okio.Buffer;
@@ -60,5 +65,12 @@ public class Utils {
             return json.getString(name);
     }
 
+    public static DBManager getDBIstance(){
+        return HomeFragment.getDB();
+    }
+
+    public static List<Item> getList(){
+        return HomeFragment.getLst();
+    }
 
 }

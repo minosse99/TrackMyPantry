@@ -1,6 +1,6 @@
 package com.example.mypantry.data.model;
 
-import com.example.mypantry.connection.AuthToken;
+import com.example.mypantry.connection.*;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
@@ -23,6 +23,4 @@ public class LoggedInUser {
     public String getDisplayName() {
         return displayName;
     }
-
-
 }
